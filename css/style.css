@@ -3994,4 +3994,144 @@ body:has(.sms-confirm-modal.active) .mobile-bottom-nav {
 .hero-content {
     position: relative;
     z-index: 2;
+}/* =========================
+   HERO INFO FIX - MOBILE
+========================= */
+
+@media (max-width: 768px) {
+    .hero-info {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+
+    .hero-info .info-box,
+    .hero-info .hero-info-link {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        text-align: left;
+        margin: 0;
+    }
+
+    .hero-info .info-box i,
+    .hero-info .hero-info-link i {
+        width: 58px;
+        height: 58px;
+        min-width: 58px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hero-info .info-box div,
+    .hero-info .hero-info-link div {
+        flex: 1;
+    }
 }
+
+/* =========================
+   CART SUMMARY BUTTON FIX
+   PHONE + PC
+========================= */
+
+.cart-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.cart-summary h2 {
+    margin: 0;
+}
+
+.cart-summary .checkout-btn {
+    margin-left: auto;
+    position: relative;
+    top: -4px;
+}
+
+@media (max-width: 768px) {
+    .cart-summary {
+        padding: 30px 22px;
+    }
+
+    .cart-summary .checkout-btn {
+        width: 100%;
+        text-align: center;
+        margin-left: 0;
+        top: -2px;
+    }
+}/* =========================
+   HERO INFO FIX - MOBILE
+========================= */
+
+@media (max-width: 768px) {
+    .hero-info {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+
+    .hero-info .info-box,
+    .hero-info .hero-info-link {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        text-align: left;
+        margin: 0;
+    }
+
+    .hero-info .info-box i,
+    .hero-info .hero-info-link i {
+        width: 58px;
+        height: 58px;
+        min-width: 58px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hero-info .info-box div,
+    .hero-info .hero-info-link div {
+        flex: 1;
+    }
+}
+/* Tuščio krepšelio mygtukas „Peržiūrėti meniu“ */
+
+.empty-cart .empty-cart-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+
+    width: calc(100% - 36px) !important;
+    max-width: 220px !important;
+    min-height: 52px;
+
+    margin: 10px auto 18px !important;
+    padding: 14px 20px !important;
+
+    box-sizing: border-box;
+    float: none !important;
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: -4px !important;
+
+    text-align: center;
+}
+
+/* =========================
+   CART SUMMARY BUTTON FIX
+   PHONE + PC
+========================= */
+
+
