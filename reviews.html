@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="lt">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Vilniaus Traškio klientų atsiliepimai.">
+
+    <title>Atsiliepimai | Vilniaus Traškis</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="container">
+
+        <a href="index.html" class="logo">
+            Vilniaus <span>Traškis</span>
+        </a>
+
+        <nav class="navbar">
+
+            <a href="index.html">Pradžia</a>
+
+            <a href="menu.html">Meniu</a>
+
+            <a href="reviews.html">Atsiliepimai</a>
+
+            <a href="contact.html">Kontaktai</a>
+
+        </nav>
+
+        <div class="header-right">
+
+            <a href="cart.html"
+               class="cart"
+               aria-label="Atidaryti krepšelį">
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+                <span class="cart-count">0</span>
+
+            </a>
+
+            <button type="button"
+                    class="menu-toggle"
+                    aria-label="Atidaryti meniu"
+                    aria-expanded="false">
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+<main class="reviews-page">
+
+    <section class="reviews-heading">
+
+        <div class="container">
+
+            <span class="section-label">
+                KLIENTŲ ATSILIEPIMAI
+            </span>
+
+            <h1>Ką apie mus sako klientai</h1>
+
+            <p>
+                Čia netrukus rasite tikrus Vilniaus Traškio
+                klientų atsiliepimus.
+            </p>
+
+        </div>
+
+    </section>
+
+    <section class="reviews-section">
+
+    <div class="container reviews-layout">
+
+        <div class="review-form-card">
+
+            <span class="section-label">
+                PALIKITE ATSILIEPIMĄ
+            </span>
+
+            <h2>Pasidalykite savo patirtimi</h2>
+
+            <p class="review-form-intro">
+                Jūsų nuomonė padeda mums tobulėti ir kitiems
+                klientams lengviau išsirinkti.
+            </p>
+
+            <form id="reviewForm">
+
+                <div class="form-group">
+
+                    <label for="reviewName">
+                        Jūsų vardas
+                    </label>
+
+                    <input
+                        type="text"
+                        id="reviewName"
+                        name="name"
+                        placeholder="Įveskite vardą"
+                        maxlength="50"
+                        autocomplete="name"
+                        required
+                    >
+
+                </div>
+
+                <fieldset class="rating-field">
+
+                    <legend>Jūsų įvertinimas</legend>
+
+                    <div class="star-rating">
+
+                        <input
+                            type="radio"
+                            id="star5"
+                            name="rating"
+                            value="5"
+                            required
+                        >
+
+                        <label for="star5" aria-label="5 žvaigždutės">
+                            <i class="fa-solid fa-star"></i>
+                        </label>
+
+                        <input
+                            type="radio"
+                            id="star4"
+                            name="rating"
+                            value="4"
+                        >
+
+                        <label for="star4" aria-label="4 žvaigždutės">
+                            <i class="fa-solid fa-star"></i>
+                        </label>
+
+                        <input
+                            type="radio"
+                            id="star3"
+                            name="rating"
+                            value="3"
+                        >
+
+                        <label for="star3" aria-label="3 žvaigždutės">
+                            <i class="fa-solid fa-star"></i>
+                        </label>
+
+                        <input
+                            type="radio"
+                            id="star2"
+                            name="rating"
+                            value="2"
+                        >
+
+                        <label for="star2" aria-label="2 žvaigždutės">
+                            <i class="fa-solid fa-star"></i>
+                        </label>
+
+                        <input
+                            type="radio"
+                            id="star1"
+                            name="rating"
+                            value="1"
+                        >
+
+                        <label for="star1" aria-label="1 žvaigždutė">
+                            <i class="fa-solid fa-star"></i>
+                        </label>
+
+                    </div>
+
+                </fieldset>
+
+                <div class="form-group">
+
+                    <label for="reviewText">
+                        Atsiliepimas
+                    </label>
+
+                    <textarea
+                        id="reviewText"
+                        name="review"
+                        rows="6"
+                        minlength="10"
+                        maxlength="300"
+                        placeholder="Parašykite, kas jums patiko..."
+                        required
+                    ></textarea>
+
+                    <div class="review-character-count">
+                        <span id="reviewCharacterCount">0</span>/300
+                    </div>
+
+                </div>
+
+                <div class="review-honeypot" aria-hidden="true">
+
+                    <label for="reviewWebsite">
+                        Interneto svetainė
+                    </label>
+
+                    <input
+                        type="text"
+                        id="reviewWebsite"
+                        name="website"
+                        tabindex="-1"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="submit-review-btn"
+                >
+
+                    <i class="fa-solid fa-paper-plane"></i>
+
+                    Pateikti atsiliepimą
+
+                </button>
+
+                <p
+                    class="review-form-message"
+                    id="reviewFormMessage"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+
+            </form>
+
+        </div>
+
+        <div class="reviews-list-column">
+
+            <div class="reviews-list-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        KLIENTŲ NUOMONĖS
+                    </span>
+
+                    <h2>Naujausi atsiliepimai</h2>
+
+                </div>
+
+                <div class="reviews-average" id="reviewsAverage">
+
+                    <strong>—</strong>
+
+                    <div>
+
+                        <div class="reviews-average-stars">
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                        </div>
+
+                        <span>Atsiliepimų dar nėra</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="reviews-list" id="reviewsList">
+
+                <div class="reviews-empty">
+
+                    <div class="reviews-empty-icon">
+
+                        <i class="fa-solid fa-comment-dots"></i>
+
+                    </div>
+
+                    <h3>Būkite pirmieji!</h3>
+
+                    <p>
+                        Pirmasis klientų atsiliepimas bus
+                        parodytas šioje vietoje.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+<footer class="footer">
+
+    <div class="container footer-grid">
+
+        <div class="footer-brand">
+
+            <a href="index.html" class="logo">
+                Vilniaus <span>Traškis</span>
+            </a>
+
+            <p>
+                Traškūs kebabai, vištiena ir sotūs kompleksai
+                greitam atsiėmimui Vilniuje.
+            </p>
+
+        </div>
+
+        <div class="footer-column">
+
+            <h3>Nuorodos</h3>
+
+            <a href="index.html">Pradžia</a>
+            <a href="menu.html">Meniu</a>
+            <a href="reviews.html">Atsiliepimai</a>
+            <a href="contact.html">Kontaktai</a>
+
+        </div>
+
+        <div class="footer-column">
+
+            <h3>Užsakymai</h3>
+
+            <a href="tel:+37065088000">
+
+                <i class="fa-solid fa-phone"></i>
+
+                +370 650 88000
+
+            </a>
+
+            <a href="cart.html">
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+                Jūsų krepšelis
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="container footer-bottom">
+
+        <span>
+            © <span class="current-year"></span>
+            Vilniaus Traškis
+        </span>
+
+        <span>Visos teisės saugomos</span>
+
+    </div>
+
+</footer>
+
+<script src="js/script.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/reviews.js"></script>
+
+</body>
+
+</html>
