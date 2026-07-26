@@ -4135,3 +4135,37 @@ body:has(.sms-confirm-modal.active) .mobile-bottom-nav {
 ========================= */
 
 
+/* Tuščio krepšelio tekstų centravimas */
+
+.empty-cart {
+    text-align: center;
+}
+
+.empty-cart h2,
+.empty-cart p {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}/* Mažesnė pagrindinio puslapio antraštė */
+
+.hero-content h1 {
+    max-width: 720px;
+    font-size: clamp(34px, 4vw, 52px) !important;
+    line-height: 1.08;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .hero-content h1 {
+        max-width: 100%;
+        font-size: 36px !important;
+        line-height: 1.12;
+    }
+}
+
+@media (max-width: 420px) {
+    .hero-content h1 {
+        font-size: 32px !important;
+    }
+}
