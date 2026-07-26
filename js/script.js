@@ -114,13 +114,24 @@ const products = [
     },
 
     {
-        id: 8,
-        name: "Mėsainio kompleksas",
-        category: "combos",
-        image: "images/menu/mesainio-kompleksas.jpg",
-        description: "Gruzdintos bulvytės ir gėrimas.",
-        price: 8.50
-    },
+    id: 8,
+    name: "Burgerio kompleksas",
+    category: "kompleksai",
+    image: "images/menu/burgerio-kompleksas-su-traskia-vistiena.jpg",
+    description: "Didelis burgerio kompleksas su gėrimu.",
+    variants: [
+        {
+            name: "Burgeris su traškia vištiena, sūriu ir stiksais + gėrimas (didelis)",
+            price: 8.50,
+            image: "images/menu/burgerio-kompleksas-su-traskia-vistiena.jpg"
+        },
+        {
+            name: "Burgeris su vištienos kebabo mėsa, stiksai + gėrimas (didelis)",
+            price: 8.50,
+            image: "images/menu/burgerio-kompleksas-su-kebabo-mesa.jpg"
+        }
+    ]
+},
 
     {
         id: 9,
@@ -166,14 +177,32 @@ const products = [
         description: "Gruzdinta menkė tešloje, bulvytės, tartarų padažas.",
         price: 10.50
     },
-
+{
+    id: 25,
+    name: "Gruzdinti kaimiški koldūnai",
+    category: "main",
+    image: "images/menu/gruzdinti-kaimiski-koldunai-25-vnt-su-suriu.jpg",
+    description: "Gruzdinti kaimiški koldūnai, 25 vnt. su sūriu.",
+    price: 7.00
+},
     {
-        id: 14,
-        name: "Mėsainis",
-        category: "main",
-        image: "images/menu/mesainis.jpg",
-        price: 5.00
-    },
+    id: 14,
+    name: "Burgeris",
+    category: "burgeriai",
+    image: "images/menu/burgeris-su-vistienos-kebabo-mesa.jpg",
+    variants: [
+        {
+            name: "Burgeris su vištienos kebabo mėsa",
+            price: 5.00,
+            image: "images/menu/burgeris-su-vistienos-kebabo-mesa.jpg"
+        },
+        {
+            name: "Burgeris su traškia vištiena ir sūriu",
+            price: 5.00,
+            image: "images/menu/burgeris-su-traskia-vistiena-ir-suriu.jpg"
+        }
+    ]
+},
 
     {
         id: 15,
@@ -274,36 +303,37 @@ const products = [
     ]
 },
 
+
     {
     id: 24,
     name: "Gėrimas",
     category: "extras",
-    image: "images/menu/gerimai/pepsi-330-ml.jpg",
+    image: "images/menu/gerimai/coca-cola-pepsi.jpg",
     variants: [
         {
-            name: "PEPSI, 330 ml",
+            name: "Coca-Cola / Pepsi",
             price: 2.00,
-            image: "images/menu/gerimai/pepsi-330-ml.jpg"
+            image: "images/menu/gerimai/coca-cola-pepsi.jpg"
         },
         {
-            name: "Duonos gira GUBERNIJA, 500 ml",
+            name: "Sprite / 7UP",
             price: 2.00,
-            image: "images/menu/gerimai/duonos-gira-gubernija-500-ml.jpg"
+            image: "images/menu/gerimai/sprite-7up.jpg"
         },
         {
-            name: "Borjomi kriaušių skonio limonadas, 500 ml",
+            name: "Fanta / Mirinda",
             price: 2.00,
-            image: "images/menu/gerimai/borjomi-kriusiu-skonio-limonadas-500-ml.jpg"
+            image: "images/menu/gerimai/fanta-mirinda.jpg"
         },
         {
-            name: "Borjomi tarchuno skonio limonadas, 500 ml",
+            name: "Gazuotas vanduo",
             price: 2.00,
-            image: "images/menu/gerimai/borjomi-tarchuno-skonio-limonadas-500-ml.jpg"
+            image: "images/menu/gerimai/gazuotas-vanduo.jpg"
         },
         {
-            name: "Borjomi mandarinų skonio limonadas, 500 ml",
+            name: "Negazuotas vanduo",
             price: 2.00,
-            image: "images/menu/gerimai/borjomi-mandarinu-skonio-limonadas-500-ml.jpg"
+            image: "images/menu/gerimai/negazuotas-vanduo.jpg"
         }
     ]
 }
