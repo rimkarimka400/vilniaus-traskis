@@ -35,29 +35,21 @@ const products = [
     },
 
     {
-        id: 3,
-        name: "Gruzdintos bulvytės",
-        category: "chicken",
-        image: "images/menu/bulvytes.jpg",
-        variants: [
-            {
-                name: "Maža porcija",
-                price: 3.70
-            },
-            {
-                name: "Didelė porcija",
-                price: 4.20
-            },
-            {
-                name: "Maža porcija + sūris",
-                price: 4.40
-            },
-            {
-                name: "Didelė porcija + sūris",
-                price: 4.90
-            }
-        ]
-    },
+    id: 3,
+    name: "Gruzdintos bulvytės",
+    category: "chicken",
+    image: "images/menu/bulvytes.jpg",
+    variants: [
+        {
+            name: "Bulvytės",
+            price: 3.70
+        },
+        {
+            name: "Bulvytės + sūris",
+            price: 4.70
+        }
+    ]
+},
 
     {
         id: 4,
@@ -74,7 +66,7 @@ const products = [
         category: "chicken",
         image: "images/menu/traskis-bowl.jpg",
         description: "Traški vištiena, bulvytės, padažas, sūris, svogūnai, jalapenai, skrudintas lavašas.",
-        price: 9.50
+        price: 9.70
     },
 
     {
@@ -86,11 +78,11 @@ const products = [
         variants: [
             {
                 name: "Maža porcija",
-                price: 8.10
+                price: 8.90
             },
             {
                 name: "Didelė porcija",
-                price: 8.90
+                price: 9.60
             }
         ]
     },
@@ -103,12 +95,12 @@ const products = [
         description: "Gruzdintos bulvytės ir gėrimas.",
         variants: [
             {
-                name: "Maža porcija",
-                price: 8.30
+                name: "Maža porcija 5vnt.",
+                price: 8.90
             },
             {
-                name: "Didelė porcija",
-                price: 9.50
+                name: "Didelė porcija 6vnt.",
+                price: 9.60
             }
         ]
     },
@@ -179,11 +171,19 @@ const products = [
     },
 {
     id: 25,
-    name: "Gruzdinti kaimiški koldūnai",
+    name: "Gruzdinti kaimiški koldūnai 25vnt.",
     category: "main",
     image: "images/menu/gruzdinti-kaimiski-koldunai-25-vnt-su-suriu.jpg",
-    description: "Gruzdinti kaimiški koldūnai, 25 vnt. su sūriu.",
-    price: 7.00
+    variants: [
+        {
+            name: "Be sūrio",
+            price: 6.00
+        },
+        {
+            name: "Su sūriu",
+            price: 7.00
+        }
+    ]
 },
     {
     id: 14,
@@ -206,11 +206,11 @@ const products = [
 
     {
         id: 15,
-        name: "14 sparnelių rinkinys",
+        name: "12 sparnelių rinkinys",
         category: "sets",
         image: "images/menu/14-sparneliu.jpg",
-        description: "14 sparnelių, 2 bulvytės ir 2 gėrimai.",
-        price: 16.20
+        description: "14 sparnelių, 2 bulvytės + 2 gėrimai + 2 padažai.",
+        price: 16.00
     },
 
     {
@@ -218,17 +218,17 @@ const products = [
         name: "18 sparnelių rinkinys",
         category: "sets",
         image: "images/menu/18-sparneliu.jpg",
-        description: "18 sparnelių, 3 bulvytės ir 3 gėrimai.",
-        price: 20.50
+        description: "18 sparnelių, 3 bulvytės + 3 gėrimai + 3 padažai.",
+        price: 23.00
     },
 
     {
         id: 17,
-        name: "14 vištienos krūtinėlės juostelių rinkinys",
+        name: "12 vištienos krūtinėlės juostelių rinkinys",
         category: "sets",
         image: "images/menu/14-juosteliu.jpg",
-        description: "14 vištienos krūtinėlės juostelių, 2 bulvytės ir 2 gėrimai.",
-        price: 19.50
+        description: "14 vištienos krūtinėlės juostelių, 2 bulvytės + 2 gėrimai + 2 padažai",
+        price: 18.00
     },
 
     {
@@ -236,8 +236,8 @@ const products = [
         name: "18 vištienos krūtinėlės juostelių rinkinys",
         category: "sets",
         image: "images/menu/18-juosteliu.jpg",
-        description: "18 vištienos krūtinėlės juostelių, 3 bulvytės ir 3 gėrimai.",
-        price: 24.30
+        description: "18 vištienos krūtinėlės juostelių, 3 bulvytės + 3 gėrimai + 3 padažai.",
+        price: 25.50
     },
 
     {
@@ -282,22 +282,22 @@ const products = [
     variants: [
         {
             name: "Tartarų padažas",
-            price: 0.60,
+            price: 0.70,
             image: "images/menu/padazai/tartaru.jpg"
         },
         {
             name: "Agurkinis padažas",
-            price: 0.60,
+            price: 0.70,
             image: "images/menu/padazai/agurkinis.jpg"
         },
         {
             name: "Česnakinis padažas",
-            price: 0.60,
+            price: 0.70,
             image: "images/menu/padazai/cesnakinis.jpg"
         },
         {
             name: "BBQ padažas",
-            price: 0.60,
+            price: 0.70,
             image: "images/menu/padazai/bbq.jpg"
         }
     ]
