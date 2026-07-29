@@ -8,11 +8,11 @@ const products = [
         variants: [
             {
                 name: "Maža porcija – 5 vnt.",
-                price: 5.10
+                price: 5.40
             },
             {
                 name: "Didelė porcija – 6 vnt.",
-                price: 5.80
+                price: 6.10
             }
         ]
     },
@@ -77,12 +77,12 @@ const products = [
         description: "Gruzdintos bulvytės ir gėrimas.",
         variants: [
             {
-                name: "Maža porcija",
-                price: 8.90
+                name: "Maža porcija 5 vnt.",
+                price: 8.10
             },
             {
-                name: "Didelė porcija",
-                price: 9.60
+                name: "Didelė porcija 6 vnt.",
+                price: 8.90
             }
         ]
     },
@@ -131,7 +131,7 @@ const products = [
         category: "combos",
         image: "images/menu/firminio-kebabo-kompleksas.jpg",
         description: "Gruzdintos bulvytės ir gėrimas.",
-        price: 9.50
+        price: 9.90
     },
 
     {
@@ -140,7 +140,7 @@ const products = [
         category: "combos",
         image: "images/menu/kebabo-kompleksas.jpg",
         description: "Kebabas su vištiena, sūriu ir stiksais + bulvytės + gėrimas.",
-        price: 9.50
+        price: 9.90
     },
 
     {
@@ -167,7 +167,7 @@ const products = [
         category: "main",
         image: "images/menu/fish-and-chips.jpg",
         description: "Gruzdinta menkė tešloje, bulvytės, tartarų padažas.",
-        price: 10.50
+        price: 9.50
     },
 {
     id: 25,
@@ -177,11 +177,11 @@ const products = [
     variants: [
         {
             name: "Be sūrio",
-            price: 6.00
+            price: 7.00
         },
         {
             name: "Su sūriu",
-            price: 7.00
+            price: 8.00
         }
     ]
 },
@@ -193,12 +193,12 @@ const products = [
     variants: [
         {
             name: "Burgeris su vištienos kebabo mėsa",
-            price: 5.00,
+            price: 5.50,
             image: "images/menu/burgeris-su-vistienos-kebabo-mesa.jpg"
         },
         {
             name: "Burgeris su traškia vištiena ir sūriu",
-            price: 5.00,
+            price: 5.50,
             image: "images/menu/burgeris-su-traskia-vistiena-ir-suriu.jpg"
         }
     ]
@@ -209,16 +209,16 @@ const products = [
         name: "12 sparnelių rinkinys",
         category: "sets",
         image: "images/menu/14-sparneliu.jpg",
-        description: "14 sparnelių, 2 bulvytės + 2 gėrimai + 2 padažai.",
+        description: "12 sparnelių, 2 bulvytės + 2 gėrimai + 2 padažai.",
         price: 16.00
     },
 
     {
         id: 16,
-        name: "18 sparnelių rinkinys",
+        name: "12 petelių rinkinys",
         category: "sets",
         image: "images/menu/18-sparneliu.jpg",
-        description: "18 sparnelių, 3 bulvytės + 3 gėrimai + 3 padažai.",
+        description: "12 petelių, 2 bulvytės + 2 gėrimai + 2 padažai.",
         price: 23.00
     },
 
@@ -227,7 +227,7 @@ const products = [
         name: "12 vištienos krūtinėlės juostelių rinkinys",
         category: "sets",
         image: "images/menu/14-juosteliu.jpg",
-        description: "14 vištienos krūtinėlės juostelių, 2 bulvytės + 2 gėrimai + 2 padažai",
+        description: "12 vištienos krūtinėlės juostelių, 2 bulvytės + 2 gėrimai + 2 padažai",
         price: 18.00
     },
 
@@ -242,20 +242,20 @@ const products = [
 
     {
         id: 19,
-        name: "Miksas",
+        name: "18 vnt. sparnelių",
         category: "sets",
         image: "images/menu/mazasis-miksas.jpg",
-        description: "7 sparneliai, 7 vištienos krūtinėlės juostelės, 2 bulvytės ir 2 gėrimai.",
-        price: 18.50
+        description: "18 sparnelių, 3 bulvytės + 3 gėrimai + padažai.",
+        price: 23.00
     },
 
     {
         id: 20,
-        name: "Miksas",
+        name: "18 vnt. vištienos petelių",
         category: "sets",
         image: "images/menu/didysis-miksas.jpg",
-        description: "9 sparneliai, 9 vištienos krūtinėlės juostelės, 3 bulvytės ir 3 gėrimai.",
-        price: 22.50
+        description: "18 vnt. vištienos petelių, 3 bulvytės + 3 gėrimai + 3 padažai.",
+        price: 25.50
     },
 
     {

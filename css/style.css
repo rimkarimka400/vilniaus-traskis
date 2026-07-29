@@ -4168,4 +4168,18 @@ body:has(.sms-confirm-modal.active) .mobile-bottom-nav {
     .hero-content h1 {
         font-size: 32px !important;
     }
+}.pickup-notice {
+    margin: 18px 0;
+    padding: 14px 16px;
+    background: rgba(255, 138, 0, 0.12);
+    border: 1px solid #ff8a00;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 15px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.pickup-notice strong {
+    color: #ffb347;
 }
