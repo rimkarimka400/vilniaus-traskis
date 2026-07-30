@@ -549,7 +549,6 @@ function addProductToCart(productId, card) {
 
     saveCart(cart);
 
-}
 if (typeof gtag === "function") {
     gtag("event", "add_to_cart", {
         currency: "EUR",
@@ -564,6 +563,9 @@ if (typeof gtag === "function") {
         ]
     });
 }
+
+}
+
 
 document.addEventListener("change", event => {
 
