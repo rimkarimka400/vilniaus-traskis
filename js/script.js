@@ -550,6 +550,20 @@ function addProductToCart(productId, card) {
     saveCart(cart);
 
 }
+if (typeof gtag === "function") {
+    gtag("event", "add_to_cart", {
+        currency: "EUR",
+        value: selectedPrice,
+        items: [
+            {
+                item_id: product.id,
+                item_name: selectedName,
+                price: selectedPrice,
+                quantity: 1
+            }
+        ]
+    });
+}
 
 document.addEventListener("change", event => {
 
@@ -973,4 +987,28 @@ menuGrid?.addEventListener("change", event => {
         productImage.src = selectedImage;
     }
 
+});
+/* Google Analytics - Phone Click Tracking */
+document.addEventListener("click", event => {
+    const phoneLink = event.target.closest('a[href^="tel:"]');
+
+    if (!phoneLink || typeof gtag !== "function") {
+        return;
+    }
+
+    gtag("event", "phone_click", {
+        phone_number: phoneLink.getAttribute("href").replace("tel:", "")
+    });
+});
+/* Google Analytics - Maps Click Tracking */
+document.addEventListener("click", event => {
+    const mapLink = event.target.closest('a[href*="google.com/maps"], a[href*="maps.app.goo.gl"]');
+
+    if (!mapLink || typeof gtag !== "function") {
+        return;
+    }
+
+    gtag("event", "map_click", {
+        destination: mapLink.href
+    });
 });

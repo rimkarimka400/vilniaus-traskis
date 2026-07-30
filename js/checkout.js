@@ -260,6 +260,18 @@ orderForm?.addEventListener("submit", event => {
 const customerPhone = normalizeLithuanianPhone(
     enteredPhone
 );
+if (typeof gtag === "function") {
+    gtag("event", "begin_checkout", {
+        currency: "EUR",
+        value: calculateTotal(cart),
+        items: cart.map(item => ({
+            item_id: item.productId,
+            item_name: item.name,
+            price: item.price,
+            quantity: item.quantity
+        }))
+    });
+}
 
 if (!customerPhone) {
     customerPhoneInput.setCustomValidity(
