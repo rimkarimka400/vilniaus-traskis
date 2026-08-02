@@ -4182,4 +4182,368 @@ body:has(.sms-confirm-modal.active) .mobile-bottom-nav {
 
 .pickup-notice strong {
     color: #ffb347;
+}/* =========================================
+   20 % NUOLAIDA HERO DALYJE
+========================================= */
+
+.website-discount {
+    width: fit-content;
+    max-width: 100%;
+
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    margin: 24px 0 18px;
+    padding: 11px 16px 11px 11px;
+
+    border:
+        1px solid
+        rgba(255, 138, 0, 0.42);
+
+    border-radius: 14px;
+
+    background:
+        rgba(10, 10, 10, 0.76);
+
+    box-shadow:
+        0 12px 30px
+        rgba(0, 0, 0, 0.28);
+
+    backdrop-filter: blur(8px);
+}
+
+.website-discount__badge {
+    min-width: 58px;
+    height: 44px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 11px;
+
+    background: #ff8a00;
+    color: #111111;
+
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.website-discount__copy {
+    display: flex;
+    flex-direction: column;
+}
+
+.website-discount__copy strong {
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.35;
+}
+
+.website-discount__copy small {
+    margin-top: 3px;
+
+    color: #aaaaaa;
+
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+@media (max-width: 600px) {
+    .website-discount {
+        align-items: flex-start;
+
+        margin-top: 20px;
+        padding: 10px 13px 10px 10px;
+    }
+
+    .website-discount__badge {
+        min-width: 52px;
+        height: 40px;
+
+        font-size: 14px;
+    }
+
+    .website-discount__copy strong {
+        font-size: 12px;
+    }
+}/* =========================================
+   PRODUKTŲ PASIRINKIMAI
+========================================= */
+
+.product-option {
+    width: 100%;
+    margin-top: 13px;
+}
+
+.product-option-label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #d0d0d0;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.product-variant,
+.product-sauce,
+.product-drink {
+    width: 100%;
+    min-height: 46px;
+
+    padding: 0 42px 0 14px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.16);
+
+    border-radius: 11px;
+
+    outline: none;
+
+    background: #171717;
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.product-variant:hover,
+.product-sauce:hover,
+.product-drink:hover {
+    border-color:
+        rgba(255, 138, 0, 0.55);
+}
+
+.product-variant:focus,
+.product-sauce:focus,
+.product-drink:focus {
+    border-color: #ff8a00;
+
+    background: #1b1b1b;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(255, 138, 0, 0.12);
+}
+
+.product-sauce.input-error,
+.product-drink.input-error {
+    border-color: #ff6262;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(255, 98, 98, 0.10);
+}
+
+.product-option-error {
+    display: block;
+    min-height: 17px;
+
+    margin-top: 5px;
+
+    color: #ff7777;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   PASIRINKIMAI KREPŠELYJE
+========================================= */
+
+.cart-item-options {
+    display: grid;
+    gap: 4px;
+
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
+
+.cart-item-options span {
+    color: #bcbcbc;
+
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.cart-item-options strong {
+    color: #ff9418;
+    font-weight: 700;
+}/* =========================================
+   GALUTINIS MENIU KORTELIŲ LYGIAVIMAS
+========================================= */
+
+.menu-grid,
+#menuGrid {
+    align-items: stretch;
+}
+
+.menu-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.menu-card-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+}
+
+.menu-card-main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.menu-card-options {
+    display: grid;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.menu-card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+
+    margin-top: auto;
+    padding-top: 22px;
+}
+
+.product-price {
+    margin: 0;
+}
+
+.add-to-cart {
+    margin: 0;
+}/* =========================================
+   KREPŠELIO 20 % NUOLAIDA
+========================================= */
+
+.cart-summary-discount {
+    color: #ff8a00;
+}
+
+.cart-summary-discount strong {
+    color: #ff8a00;
+}
+
+.cart-summary-total {
+    margin-top: 8px;
+    padding-top: 16px;
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.12);
+
+    font-size: 18px;
+}
+
+.cart-summary-total strong {
+    font-size: 22px;
+}.cart-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.cart-summary__prices {
+    display: grid;
+    gap: 14px;
+}
+
+.cart-discount-notice {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    width: fit-content;
+    padding: 9px 12px;
+
+    border: 1px solid rgba(255, 138, 0, 0.35);
+    border-radius: 10px;
+
+    background: rgba(255, 138, 0, 0.08);
+    color: #ff971d;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.cart-price-summary {
+    min-width: 280px;
+
+    display: grid;
+    gap: 9px;
+}
+
+.cart-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+
+    color: #b8b8b8;
+    font-size: 13px;
+}
+
+.cart-price-row strong {
+    color: #ffffff;
+}
+
+.cart-price-row--discount,
+.cart-price-row--discount strong {
+    color: #ff971d;
+}
+
+.cart-price-row--total {
+    margin-top: 4px;
+    padding-top: 12px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.11);
+
+    color: #ffffff;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.cart-price-row--total strong {
+    color: #ff8a00;
+    font-size: 22px;
+    font-weight: 900;
+}
+
+@media (max-width: 800px) {
+    .cart-summary {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .cart-price-summary {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .checkout-btn {
+        width: 100%;
+        text-align: center;
+    }
 }

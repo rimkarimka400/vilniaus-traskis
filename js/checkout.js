@@ -1,79 +1,281 @@
+/* =========================================
+   VILNIAUS TRAŠKIS – CHECKOUT
+========================================= */
+
 const RESTAURANT_PHONE = "+37065088000";
+const CART_STORAGE_KEY = "traskisCart";
+const DISCOUNT_RATE = 0.20;
+const MIN_PREPARATION_MINUTES = 25;
 
 const orderForm = document.querySelector("#orderForm");
 const checkoutItems = document.querySelector("#checkoutItems");
+
+const checkoutSubtotal = document.querySelector("#checkoutSubtotal");
+const checkoutDiscount = document.querySelector("#checkoutDiscount");
 const checkoutTotal = document.querySelector("#checkoutTotal");
-const pickupTimeInput = document.querySelector(
-    "#pickupTime"
-);
+
+const customerNameInput = document.querySelector("#customerName");
+const customerPhoneInput = document.querySelector("#customerPhone");
+const pickupTypeInput = document.querySelector("#pickupType");
+const pickupTimeInput = document.querySelector("#pickupTime");
+const customerCommentInput = document.querySelector("#customerComment");
+
 const qrModal = document.querySelector("#qrModal");
 const qrClose = document.querySelector("#qrClose");
 const qrCodeContainer = document.querySelector("#qrCode");
+const qrOrderNumber = document.querySelector("#qrOrderNumber");
 const orderSentButton = document.querySelector("#orderSentBtn");
+
 const smsConfirmModal = document.querySelector("#smsConfirmModal");
 const smsSentButton = document.querySelector("#smsSentBtn");
 const smsNotSentButton = document.querySelector("#smsNotSentBtn");
-const customerPhoneInput = document.querySelector(
-    "#customerPhone"
-);
+
 let smsConfirmationShown = false;
-const qrOrderNumber = document.querySelector("#qrOrderNumber");
+
+
+/* =========================================
+   KREPŠELIO DUOMENYS
+========================================= */
 
 function getCart() {
     try {
-        return JSON.parse(localStorage.getItem("traskisCart")) || [];
-    } catch {
+        const savedCart = JSON.parse(
+            localStorage.getItem(CART_STORAGE_KEY)
+        );
+
+        return Array.isArray(savedCart)
+            ? savedCart
+            : [];
+    } catch (error) {
+        console.error(
+            "Nepavyko perskaityti krepšelio:",
+            error
+        );
+
         return [];
     }
 }
 
+
+/* =========================================
+   KAINOS
+========================================= */
+
 function formatPrice(price) {
-    return `${price.toFixed(2).replace(".", ",")} €`;
+    const value = Number(price) || 0;
+
+    return `${value
+        .toFixed(2)
+        .replace(".", ",")} €`;
 }
+
+
+function calculateSubtotal(cart) {
+    return cart.reduce(
+        (sum, item) => {
+            const price = Number(item.price) || 0;
+            const quantity = Number(item.quantity) || 0;
+
+            return sum + price * quantity;
+        },
+        0
+    );
+}
+
+
+function calculateDiscount(subtotal) {
+    return subtotal * DISCOUNT_RATE;
+}
+
+
+function calculateTotal(cart) {
+    const subtotal = calculateSubtotal(cart);
+    const discount = calculateDiscount(subtotal);
+
+    return subtotal - discount;
+}
+
+
+/* =========================================
+   PADAŽAI IR GĖRIMAI
+========================================= */
+
+function normalizeChoices(
+    item,
+    pluralProperty,
+    singleProperty
+) {
+    if (Array.isArray(item[pluralProperty])) {
+        return item[pluralProperty].filter(Boolean);
+    }
+
+    if (item[singleProperty]) {
+        return [item[singleProperty]];
+    }
+
+    return [];
+}
+
+
+function getItemChoices(item) {
+    return {
+        sauces: normalizeChoices(
+            item,
+            "sauces",
+            "sauce"
+        ),
+
+        drinks: normalizeChoices(
+            item,
+            "drinks",
+            "drink"
+        )
+    };
+}
+
+
+function renderItemChoices(item) {
+    const { sauces, drinks } =
+        getItemChoices(item);
+
+    if (!sauces.length && !drinks.length) {
+        return "";
+    }
+
+    return `
+        <div class="checkout-product-options">
+
+            ${
+                sauces.length
+                    ? `
+                        <small>
+                            <strong>
+                                ${
+                                    sauces.length === 1
+                                        ? "Padažas:"
+                                        : "Padažai:"
+                                }
+                            </strong>
+
+                            ${sauces.join(", ")}
+                        </small>
+                    `
+                    : ""
+            }
+
+            ${
+                drinks.length
+                    ? `
+                        <small>
+                            <strong>
+                                ${
+                                    drinks.length === 1
+                                        ? "Gėrimas:"
+                                        : "Gėrimai:"
+                                }
+                            </strong>
+
+                            ${drinks.join(", ")}
+                        </small>
+                    `
+                    : ""
+            }
+
+        </div>
+    `;
+}
+
+
+/* =========================================
+   KREPŠELIO SKAIČIUS
+========================================= */
 
 function updateCartCount() {
     const cart = getCart();
 
     const totalQuantity = cart.reduce(
-        (sum, item) => sum + item.quantity,
+        (sum, item) => {
+            return (
+                sum +
+                (Number(item.quantity) || 0)
+            );
+        },
         0
     );
 
-    document.querySelectorAll(".cart-count").forEach(element => {
-        element.textContent = totalQuantity;
-    });
+    document
+        .querySelectorAll(".cart-count")
+        .forEach(element => {
+            element.textContent =
+                totalQuantity;
+        });
 }
 
-function calculateTotal(cart) {
-    return cart.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
-    );
+
+/* =========================================
+   CHECKOUT SUMOS
+========================================= */
+
+function updateCheckoutSummary(cart) {
+    const subtotal = calculateSubtotal(cart);
+    const discount = calculateDiscount(subtotal);
+    const total = subtotal - discount;
+
+    if (checkoutSubtotal) {
+        checkoutSubtotal.textContent =
+            formatPrice(subtotal);
+    }
+
+    if (checkoutDiscount) {
+        checkoutDiscount.textContent =
+            `−${formatPrice(discount)}`;
+    }
+
+    if (checkoutTotal) {
+        checkoutTotal.textContent =
+            formatPrice(total);
+    }
 }
+
+
+/* =========================================
+   CHECKOUT PREKĖS
+========================================= */
 
 function renderCheckout() {
     const cart = getCart();
 
     if (!checkoutItems || !checkoutTotal) {
+        console.error(
+            "Checkout HTML nerasti #checkoutItems arba #checkoutTotal elementai."
+        );
+
         return;
     }
 
-    if (cart.length === 0) {
+    const submitButton =
+        orderForm?.querySelector(
+            'button[type="submit"]'
+        );
+
+    if (!cart.length) {
         checkoutItems.innerHTML = `
             <div class="checkout-empty">
+
                 <i class="fa-solid fa-cart-shopping"></i>
 
-                <p>Jūsų krepšelis tuščias.</p>
+                <p>
+                    Jūsų krepšelis tuščias.
+                </p>
 
                 <a href="menu.html">
                     Grįžti į meniu
                 </a>
+
             </div>
         `;
 
-        checkoutTotal.textContent = "0,00 €";
-
-        const submitButton = orderForm?.querySelector(".send-order-btn");
+        updateCheckoutSummary([]);
 
         if (submitButton) {
             submitButton.disabled = true;
@@ -82,41 +284,71 @@ function renderCheckout() {
         return;
     }
 
-    checkoutItems.innerHTML = cart.map(item => {
-        const itemTotal = item.price * item.quantity;
+    if (submitButton) {
+        submitButton.disabled = false;
+    }
 
-        return `
-            <div class="checkout-product">
+    checkoutItems.innerHTML = cart
+        .map(item => {
+            const price =
+                Number(item.price) || 0;
 
-                <span>
-                    ${item.quantity} × ${item.name}
-                </span>
+            const quantity =
+                Math.max(
+                    1,
+                    Number(item.quantity) || 1
+                );
 
-                <strong>
-                    ${formatPrice(itemTotal)}
-                </strong>
+            const itemTotal =
+                price * quantity;
 
-            </div>
-        `;
-    }).join("");
+            return `
+                <div class="checkout-product">
 
-    checkoutTotal.textContent = formatPrice(calculateTotal(cart));
+                    <div class="checkout-product-info">
+
+                        <span>
+                            ${quantity} ×
+                            ${item.name || "Prekė"}
+                        </span>
+
+                        ${renderItemChoices(item)}
+
+                    </div>
+
+                    <strong>
+                        ${formatPrice(itemTotal)}
+                    </strong>
+
+                </div>
+            `;
+        })
+        .join("");
+
+    updateCheckoutSummary(cart);
 }
 
-function generateOrderNumber() {
-    const savedOrderNumber = sessionStorage.getItem(
-        "traskisOrderNumber"
-    );
 
-    if (savedOrderNumber) {
-        return savedOrderNumber;
+/* =========================================
+   UŽSAKYMO NUMERIS
+========================================= */
+
+function generateOrderNumber() {
+    const existingOrderNumber =
+        sessionStorage.getItem(
+            "traskisOrderNumber"
+        );
+
+    if (existingOrderNumber) {
+        return existingOrderNumber;
     }
 
     const randomNumber = Math.floor(
         1000 + Math.random() * 9000
     );
 
-    const orderNumber = `TR-${randomNumber}`;
+    const orderNumber =
+        `TR-${randomNumber}`;
 
     sessionStorage.setItem(
         "traskisOrderNumber",
@@ -126,18 +358,69 @@ function generateOrderNumber() {
     return orderNumber;
 }
 
-function createOrderMessage(formData, cart, orderNumber) {
-    const productsText = cart.map(item => {
-        const itemTotal = item.price * item.quantity;
 
-        return `${item.quantity} x ${item.name} - ${formatPrice(itemTotal)}`;
-    }).join("\n");
+/* =========================================
+   SMS TEKSTAS
+========================================= */
 
-    const total = calculateTotal(cart);
+function createOrderMessage(
+    formData,
+    cart,
+    orderNumber
+) {
+    const productsText = cart
+        .map(item => {
+            const price =
+                Number(item.price) || 0;
 
-    const comment = formData.comment
-        ? formData.comment
-        : "Nėra";
+            const quantity =
+                Math.max(
+                    1,
+                    Number(item.quantity) || 1
+                );
+
+            const itemTotal =
+                price * quantity;
+
+            const { sauces, drinks } =
+                getItemChoices(item);
+
+            const lines = [
+                `${quantity} x ${
+                    item.name || "Prekė"
+                } – ${formatPrice(itemTotal)}`
+            ];
+
+            if (sauces.length) {
+                lines.push(
+                    `${
+                        sauces.length === 1
+                            ? "Padažas"
+                            : "Padažai"
+                    }: ${sauces.join(", ")}`
+                );
+            }
+
+            if (drinks.length) {
+                lines.push(
+                    `${
+                        drinks.length === 1
+                            ? "Gėrimas"
+                            : "Gėrimai"
+                    }: ${drinks.join(", ")}`
+                );
+            }
+
+            return lines.join("\n");
+        })
+        .join("\n\n");
+
+    const subtotal = calculateSubtotal(cart);
+    const discount = calculateDiscount(subtotal);
+    const total = subtotal - discount;
+
+    const comment =
+        formData.comment || "Nėra";
 
     return `UŽSAKYMAS NR. ${orderNumber}
 
@@ -147,7 +430,9 @@ Telefonas: ${formData.phone}
 UŽSAKYMAS:
 ${productsText}
 
-Viso: ${formatPrice(total)}
+Prekių suma: ${formatPrice(subtotal)}
+Nuolaida internetu -20 %: -${formatPrice(discount)}
+MOKĖTI: ${formatPrice(total)}
 
 Atsiėmimo būdas:
 ${formData.pickupType}
@@ -159,240 +444,509 @@ Komentaras:
 ${comment}`;
 }
 
+
+/* =========================================
+   SMS NUORODA
+========================================= */
+
 function createSmsLink(message) {
-    const encodedMessage = encodeURIComponent(message);
+    const encodedMessage =
+        encodeURIComponent(message);
 
-    const isIOS = /iPad|iPhone|iPod/.test(
-        navigator.userAgent
+    const isIOS =
+        /iPad|iPhone|iPod/.test(
+            navigator.userAgent
+        );
+
+    const separator =
+        isIOS ? "&" : "?";
+
+    return (
+        `sms:${RESTAURANT_PHONE}` +
+        `${separator}body=${encodedMessage}`
     );
-
-    const separator = isIOS ? "&" : "?";
-
-    return `sms:${RESTAURANT_PHONE}${separator}body=${encodedMessage}`;
 }
+
 
 function isMobileDevice() {
-    return /Android|iPhone|iPad|iPod|Mobile/i.test(
-        navigator.userAgent
-    );
+    return /Android|iPhone|iPad|iPod|Mobile/i
+        .test(navigator.userAgent);
 }
 
-function showQrCode(smsLink, orderNumber) {
+
+/* =========================================
+   QR KODAS
+========================================= */
+
+function showQrCode(
+    smsLink,
+    orderNumber
+) {
     if (!qrModal || !qrCodeContainer) {
+        console.error(
+            "Nerastas QR langas arba #qrCode elementas."
+        );
+
+        return;
+    }
+
+    if (typeof QRCode === "undefined") {
+        alert(
+            "Nepavyko paleisti QR kodo bibliotekos."
+        );
+
         return;
     }
 
     qrCodeContainer.innerHTML = "";
 
-    new QRCode(qrCodeContainer, {
-        text: smsLink,
-        width: 220,
-        height: 220,
-        correctLevel: QRCode.CorrectLevel.M
-    });
+    try {
+        new QRCode(qrCodeContainer, {
+            text: smsLink,
+            width: 320,
+            height: 320,
+            correctLevel:
+                QRCode.CorrectLevel.L
+        });
+    } catch (error) {
+        console.error(
+            "QR kodo klaida:",
+            error
+        );
 
-    qrOrderNumber.textContent = `Užsakymo numeris: ${orderNumber}`;
+        alert(
+            "Nepavyko sukurti QR kodo. Užsakymo tekstas gali būti per ilgas."
+        );
+
+        return;
+    }
+
+    if (qrOrderNumber) {
+        qrOrderNumber.textContent =
+            `Užsakymo numeris: ${orderNumber}`;
+    }
 
     qrModal.classList.add("active");
-
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow =
+        "hidden";
 }
+
 
 function closeQrModal() {
     qrModal?.classList.remove("active");
 
-    document.body.style.overflow = "";
+    document.body.style.overflow =
+        "";
 }
-/* =========================
-   PHONE NUMBER VALIDATION
-========================= */
+
+
+/* =========================================
+   TELEFONO NUMERIS
+========================================= */
 
 function cleanPhoneNumber(phone) {
-    return phone.replace(/[\s()-]/g, "");
+    return String(phone || "")
+        .replace(/[\s()-]/g, "");
 }
 
+
 function normalizeLithuanianPhone(phone) {
-    const cleanedPhone = cleanPhoneNumber(phone);
+    const cleanedPhone =
+        cleanPhoneNumber(phone);
 
     if (/^86\d{7}$/.test(cleanedPhone)) {
         return `+370${cleanedPhone.slice(1)}`;
     }
 
-    if (/^\+3706\d{7}$/.test(cleanedPhone)) {
+    if (
+        /^\+3706\d{7}$/.test(
+            cleanedPhone
+        )
+    ) {
         return cleanedPhone;
     }
 
     return null;
 }
 
-customerPhoneInput?.addEventListener("input", () => {
-    customerPhoneInput.setCustomValidity("");
-});
 
-customerPhoneInput?.addEventListener("blur", () => {
-    const normalizedPhone = normalizeLithuanianPhone(
-        customerPhoneInput.value
-    );
-
-    if (normalizedPhone) {
-        customerPhoneInput.value = normalizedPhone;
-        customerPhoneInput.setCustomValidity("");
+customerPhoneInput?.addEventListener(
+    "input",
+    () => {
+        customerPhoneInput
+            .setCustomValidity("");
     }
-
-
-});
-orderForm?.addEventListener("submit", event => {
-    event.preventDefault();
-
-    const cart = getCart();
-
-    if (cart.length === 0) {
-        return;
-    }
-
-    const customerName = document
-        .querySelector("#customerName")
-        .value
-        .trim();
-
-    const enteredPhone = customerPhoneInput.value.trim();
-
-const customerPhone = normalizeLithuanianPhone(
-    enteredPhone
 );
-if (typeof gtag === "function") {
-    gtag("event", "begin_checkout", {
-        currency: "EUR",
-        value: calculateTotal(cart),
-        items: cart.map(item => ({
-            item_id: item.productId,
-            item_name: item.name,
-            price: item.price,
-            quantity: item.quantity
-        }))
-    });
+
+
+customerPhoneInput?.addEventListener(
+    "blur",
+    () => {
+        const normalizedPhone =
+            normalizeLithuanianPhone(
+                customerPhoneInput.value
+            );
+
+        if (normalizedPhone) {
+            customerPhoneInput.value =
+                normalizedPhone;
+
+            customerPhoneInput
+                .setCustomValidity("");
+        }
+    }
+);
+
+
+/* =========================================
+   ATSIĖMIMO LAIKAS
+========================================= */
+
+function minutesToTime(totalMinutes) {
+    const hours =
+        Math.floor(totalMinutes / 60) % 24;
+
+    const minutes =
+        totalMinutes % 60;
+
+    return (
+        String(hours).padStart(2, "0") +
+        ":" +
+        String(minutes).padStart(2, "0")
+    );
 }
 
-if (!customerPhone) {
-    customerPhoneInput.setCustomValidity(
-        "Įveskite teisingą Lietuvos mobiliojo telefono numerį."
+
+function getCurrentMinutes() {
+    const now = new Date();
+
+    return (
+        now.getHours() * 60 +
+        now.getMinutes()
     );
-
-    customerPhoneInput.reportValidity();
-    customerPhoneInput.focus();
-
-    return;
 }
 
-customerPhoneInput.setCustomValidity("");
 
-    const pickupType = document
-        .querySelector("#pickupType")
-        .value;
-
-    const pickupTime = document
-
- .querySelector("#pickupTime")
-    .value;
-
-    const customerComment = document
-        .querySelector("#customerComment")
-        .value
-        .trim();
-
-    if (
-        !customerName ||
-        !customerPhone ||
-        !pickupTime
-    ) {
-        orderForm.reportValidity();
-        return;
-    }
-
-    const orderNumber = generateOrderNumber();
-
-    const formData = {
-        name: customerName,
-        phone: customerPhone,
-        pickupType,
-        pickupTime,
-        comment: customerComment
-    };
-
-    const orderMessage = createOrderMessage(
-        formData,
-        cart,
-        orderNumber
+function getMinimumPickupTime() {
+    return minutesToTime(
+        getCurrentMinutes() +
+        MIN_PREPARATION_MINUTES
     );
-
-    const smsLink = createSmsLink(orderMessage);
-
-    if (isMobileDevice()) {
-    sessionStorage.setItem(
-        "traskisPendingSmsOrder",
-        "true"
-    );
-
-    window.location.href = smsLink;
-} else {showQrCode(smsLink, orderNumber);
 }
-});
 
-qrClose?.addEventListener("click", closeQrModal);
 
-qrModal?.addEventListener("click", event => {
-    if (event.target === qrModal) {
-        closeQrModal();
+function validatePickupTime() {
+    if (!pickupTimeInput?.value) {
+        return false;
     }
-});
 
-document.addEventListener("keydown", event => {
-    if (event.key === "Escape") {
-        closeQrModal();
+    const [hours, minutes] =
+        pickupTimeInput.value
+            .split(":")
+            .map(Number);
+
+    const selectedMinutes =
+        hours * 60 + minutes;
+
+    const minimumMinutes =
+        getCurrentMinutes() +
+        MIN_PREPARATION_MINUTES;
+
+    if (selectedMinutes < minimumMinutes) {
+        pickupTimeInput.setCustomValidity(
+            `Pasirinkite laiką ne anksčiau kaip po ${MIN_PREPARATION_MINUTES} minučių.`
+        );
+
+        pickupTimeInput.reportValidity();
+        pickupTimeInput.focus();
+
+        return false;
     }
-});
 
-orderSentButton?.addEventListener("click", () => {
-    const orderNumber =
-        sessionStorage.getItem("traskisOrderNumber") || "";
+    pickupTimeInput.setCustomValidity("");
 
-    localStorage.removeItem("traskisCart");
-    sessionStorage.removeItem("traskisOrderNumber");
+    return true;
+}
 
-    qrModal.innerHTML = `
-        <div class="qr-modal-content order-success">
 
-            <div class="order-success-icon">
-                <i class="fa-solid fa-check"></i>
-            </div>
+if (pickupTimeInput) {
+    pickupTimeInput.min =
+        getMinimumPickupTime();
 
-            <span class="qr-label">UŽSAKYMAS PATEIKTAS</span>
-
-            <h2>Ačiū už užsakymą!</h2>
-
-            <p>
-                Jūsų užsakymas perduotas kebabinei.
-                Lauksime jūsų atvykstant.
-            </p>
-
-            <strong>
-                Užsakymo numeris: ${orderNumber}
-            </strong>
-
-            <a href="menu.html" class="order-success-link">
-                Grįžti į meniu
-            </a>
-
-        </div>
-    `;
-
-    updateCartCount();
-})
-
-;function openSmsConfirmation() {
-    const pendingOrder = sessionStorage.getItem(
-        "traskisPendingSmsOrder"
+    pickupTimeInput.addEventListener(
+        "input",
+        () => {
+            pickupTimeInput
+                .setCustomValidity("");
+        }
     );
+}
+
+
+/* =========================================
+   UŽSAKYMO PATEIKIMAS
+========================================= */
+
+orderForm?.addEventListener(
+    "submit",
+    event => {
+        event.preventDefault();
+
+        const cart = getCart();
+
+        if (!cart.length) {
+            alert(
+                "Jūsų krepšelis tuščias."
+            );
+
+            return;
+        }
+
+        const customerName =
+            customerNameInput
+                ?.value
+                .trim() || "";
+
+        const customerPhone =
+            normalizeLithuanianPhone(
+                customerPhoneInput
+                    ?.value
+                    .trim() || ""
+            );
+
+        const pickupType =
+            pickupTypeInput?.value || "";
+
+        const pickupTime =
+            pickupTimeInput?.value || "";
+
+        const customerComment =
+            customerCommentInput
+                ?.value
+                .trim() || "";
+
+        if (!customerName) {
+            customerNameInput?.focus();
+            orderForm.reportValidity();
+
+            return;
+        }
+
+        if (!customerPhone) {
+            customerPhoneInput
+                ?.setCustomValidity(
+                    "Įveskite numerį formatu +3706XXXXXXX arba 86XXXXXXX."
+                );
+
+            customerPhoneInput
+                ?.reportValidity();
+
+            customerPhoneInput?.focus();
+
+            return;
+        }
+
+        customerPhoneInput
+            ?.setCustomValidity("");
+
+        if (!pickupType) {
+            pickupTypeInput?.focus();
+
+            return;
+        }
+
+        if (!pickupTime) {
+            pickupTimeInput?.focus();
+            orderForm.reportValidity();
+
+            return;
+        }
+
+        if (!validatePickupTime()) {
+            return;
+        }
+
+        const orderNumber =
+            generateOrderNumber();
+
+        const formData = {
+            name: customerName,
+            phone: customerPhone,
+            pickupType,
+            pickupTime,
+            comment: customerComment
+        };
+
+        const orderMessage =
+            createOrderMessage(
+                formData,
+                cart,
+                orderNumber
+            );
+
+        const smsLink =
+            createSmsLink(orderMessage);
+
+        if (typeof gtag === "function") {
+            gtag(
+                "event",
+                "begin_checkout",
+                {
+                    currency: "EUR",
+                    value:
+                        calculateTotal(cart),
+
+                    items:
+                        cart.map(item => {
+                            const choices =
+                                getItemChoices(item);
+
+                            return {
+                                item_id:
+                                    item.productId,
+
+                                item_name:
+                                    item.name,
+
+                                item_variant: [
+                                    ...choices.sauces,
+                                    ...choices.drinks
+                                ].join(" / "),
+
+                                price:
+                                    Number(
+                                        item.price
+                                    ) || 0,
+
+                                quantity:
+                                    Number(
+                                        item.quantity
+                                    ) || 1
+                            };
+                        })
+                }
+            );
+        }
+
+        if (isMobileDevice()) {
+            sessionStorage.setItem(
+                "traskisPendingSmsOrder",
+                "true"
+            );
+
+            window.location.href =
+                smsLink;
+        } else {
+            showQrCode(
+                smsLink,
+                orderNumber
+            );
+        }
+    }
+);
+
+
+/* =========================================
+   QR LANGO VALDYMAS
+========================================= */
+
+qrClose?.addEventListener(
+    "click",
+    closeQrModal
+);
+
+
+qrModal?.addEventListener(
+    "click",
+    event => {
+        if (event.target === qrModal) {
+            closeQrModal();
+        }
+    }
+);
+
+
+document.addEventListener(
+    "keydown",
+    event => {
+        if (event.key === "Escape") {
+            closeQrModal();
+        }
+    }
+);
+
+
+/* =========================================
+   QR UŽSAKYMAS IŠSIŲSTAS
+========================================= */
+
+orderSentButton?.addEventListener(
+    "click",
+    () => {
+        const orderNumber =
+            sessionStorage.getItem(
+                "traskisOrderNumber"
+            ) || "";
+
+        localStorage.removeItem(
+            CART_STORAGE_KEY
+        );
+
+        sessionStorage.removeItem(
+            "traskisOrderNumber"
+        );
+
+        if (qrModal) {
+            qrModal.innerHTML = `
+                <div class="qr-modal-content order-success">
+
+                    <div class="order-success-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <span class="qr-label">
+                        UŽSAKYMAS PATEIKTAS
+                    </span>
+
+                    <h2>
+                        Ačiū už užsakymą!
+                    </h2>
+
+                    <p>
+                        Jūsų užsakymas perduotas kebabinei.
+                        Lauksime jūsų atvykstant.
+                    </p>
+
+                    <strong>
+                        Užsakymo numeris:
+                        ${orderNumber}
+                    </strong>
+
+                    <a
+                        href="menu.html"
+                        class="order-success-link"
+                    >
+                        Grįžti į meniu
+                    </a>
+
+                </div>
+            `;
+        }
+
+        updateCartCount();
+    }
+);
+
+
+/* =========================================
+   MOBILAUS SMS PATVIRTINIMAS
+========================================= */
+
+function openSmsConfirmation() {
+    const pendingOrder =
+        sessionStorage.getItem(
+            "traskisPendingSmsOrder"
+        );
 
     if (
         pendingOrder !== "true" ||
@@ -404,77 +958,142 @@ orderSentButton?.addEventListener("click", () => {
 
     smsConfirmationShown = true;
 
-    smsConfirmModal.classList.add("active");
-    smsConfirmModal.setAttribute("aria-hidden", "false");
+    smsConfirmModal.classList.add(
+        "active"
+    );
 
-    document.body.style.overflow = "hidden";
+    smsConfirmModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+    document.body.style.overflow =
+        "hidden";
 }
+
 
 function closeSmsConfirmation() {
-    smsConfirmModal?.classList.remove("active");
-    smsConfirmModal?.setAttribute("aria-hidden", "true");
+    smsConfirmModal?.classList.remove(
+        "active"
+    );
 
-    document.body.style.overflow = "";
+    smsConfirmModal?.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    document.body.style.overflow =
+        "";
 }
 
-smsNotSentButton?.addEventListener("click", () => {
-    sessionStorage.removeItem("traskisPendingSmsOrder");
 
-    smsConfirmationShown = false;
+smsNotSentButton?.addEventListener(
+    "click",
+    () => {
+        sessionStorage.removeItem(
+            "traskisPendingSmsOrder"
+        );
 
-    closeSmsConfirmation();
-});
+        smsConfirmationShown = false;
 
-smsSentButton?.addEventListener("click", () => {
-    const orderNumber =
-        sessionStorage.getItem("traskisOrderNumber") || "";
-
-    localStorage.removeItem("traskisCart");
-    sessionStorage.removeItem("traskisOrderNumber");
-    sessionStorage.removeItem("traskisPendingSmsOrder");
-
-    updateCartCount();
-    renderCheckout();
-
-    smsConfirmModal.innerHTML = `
-        <div class="sms-confirm-content order-success">
-
-            <div class="order-success-icon">
-                <i class="fa-solid fa-check"></i>
-            </div>
-
-            <span class="qr-label">
-                UŽSAKYMAS PATEIKTAS
-            </span>
-
-            <h2>Ačiū už užsakymą!</h2>
-
-            <p>
-                Jūsų SMS užsakymas išsiųstas kebabinei.
-                Lauksime jūsų atvykstant.
-            </p>
-
-            <strong>
-                Užsakymo numeris: ${orderNumber}
-            </strong>
-
-            <a href="menu.html" class="order-success-link">
-                Grįžti į meniu
-            </a>
-
-        </div>
-    `;
-});
-
-document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") {
-        setTimeout(openSmsConfirmation, 350);
+        closeSmsConfirmation();
     }
-});
+);
 
-window.addEventListener("pageshow", () => {
-    setTimeout(openSmsConfirmation, 350);
-});
+
+smsSentButton?.addEventListener(
+    "click",
+    () => {
+        const orderNumber =
+            sessionStorage.getItem(
+                "traskisOrderNumber"
+            ) || "";
+
+        localStorage.removeItem(
+            CART_STORAGE_KEY
+        );
+
+        sessionStorage.removeItem(
+            "traskisOrderNumber"
+        );
+
+        sessionStorage.removeItem(
+            "traskisPendingSmsOrder"
+        );
+
+        updateCartCount();
+        renderCheckout();
+
+        if (smsConfirmModal) {
+            smsConfirmModal.innerHTML = `
+                <div class="sms-confirm-content order-success">
+
+                    <div class="order-success-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <span class="qr-label">
+                        UŽSAKYMAS PATEIKTAS
+                    </span>
+
+                    <h2>
+                        Ačiū už užsakymą!
+                    </h2>
+
+                    <p>
+                        Jūsų SMS užsakymas išsiųstas kebabinei.
+                        Lauksime jūsų atvykstant.
+                    </p>
+
+                    <strong>
+                        Užsakymo numeris:
+                        ${orderNumber}
+                    </strong>
+
+                    <a
+                        href="menu.html"
+                        class="order-success-link"
+                    >
+                        Grįžti į meniu
+                    </a>
+
+                </div>
+            `;
+        }
+    }
+);
+
+
+document.addEventListener(
+    "visibilitychange",
+    () => {
+        if (
+            document.visibilityState ===
+            "visible"
+        ) {
+            setTimeout(
+                openSmsConfirmation,
+                350
+            );
+        }
+    }
+);
+
+
+window.addEventListener(
+    "pageshow",
+    () => {
+        setTimeout(
+            openSmsConfirmation,
+            350
+        );
+    }
+);
+
+
+/* =========================================
+   PALEIDIMAS
+========================================= */
 
 renderCheckout();
 updateCartCount();

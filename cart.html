@@ -5,7 +5,10 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Krepšelis | Vilniaus Traškis</title>
 
@@ -13,151 +16,295 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-          rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <!-- Google tag (gtag.js) -->
+    <script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-XC0Q2H0T8N"
+    ></script>
+
+    <script>
+        window.dataLayer =
+            window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag("js", new Date());
+
+        gtag(
+            "config",
+            "G-XC0Q2H0T8N"
+        );
+    </script>
 
 </head>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XC0Q2H0T8N"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-XC0Q2H0T8N');
-</script>
-
 <body>
 
-<header class="header">
+    <header class="header">
 
-    <div class="container">
+        <div class="container">
 
-        <a href="index.html" class="logo">
-            Vilniaus <span>Traškis</span>
-        </a>
-
-        <nav class="navbar">
-
-            <a href="index.html">Pradžia</a>
-
-            <a href="menu.html">Meniu</a>
-
-            <a href="reviews.html">Atsiliepimai</a>
-
-            <a href="contact.html">Kontaktai</a>
-
-        </nav>
-
-        <div class="header-right">
-
-            <a href="cart.html" class="cart">
-
-                <i class="fa-solid fa-cart-shopping"></i>
-
-                <span class="cart-count">0</span>
-
-            </a>
-
-        </div>
-
-    </div>
-
-</header>
-
-<main class="cart-page">
-
-    <div class="container">
-
-        <h1>Jūsų krepšelis</h1>
-
-        <div id="cartItems"></div>
-
-        <div class="cart-summary">
-
-            <h2>
-                Viso:
-                <span id="cartTotal">0.00 €</span>
-            </h2>
-<div class="pickup-notice">
-    ⏱️ Minimalus užsakymo paruošimo laikas – <strong>25 min.</strong>
-</div>
-            <a href="checkout.html" class="checkout-btn">
-                Tęsti užsakymą
-            </a>
-
-        </div>
-
-    </div>
-
-</main>
-
-<footer class="footer">
-
-    <div class="container footer-grid">
-
-        <div class="footer-brand">
-
-            <a href="index.html" class="logo">
+            <a
+                href="index.html"
+                class="logo"
+            >
                 Vilniaus <span>Traškis</span>
             </a>
 
-            <p>
-                Traškūs kebabai, vištiena ir sotūs kompleksai
-                greitam atsiėmimui Vilniuje.
-            </p>
+            <nav class="navbar">
+
+                <a href="index.html">
+                    Pradžia
+                </a>
+
+                <a href="menu.html">
+                    Meniu
+                </a>
+
+                <a href="reviews.html">
+                    Atsiliepimai
+                </a>
+
+                <a href="contact.html">
+                    Kontaktai
+                </a>
+
+            </nav>
+
+            <div class="header-right">
+
+                <a
+                    href="cart.html"
+                    class="cart"
+                    aria-label="Krepšelis"
+                >
+
+                    <i class="fa-solid fa-cart-shopping"></i>
+
+                    <span class="cart-count">
+                        0
+                    </span>
+
+                </a>
+
+            </div>
 
         </div>
 
-        <div class="footer-column">
+    </header>
 
-            <h3>Nuorodos</h3>
 
-            <a href="index.html">Pradžia</a>
-            <a href="menu.html">Meniu</a>
-            <a href="reviews.html">Atsiliepimai</a>
-            <a href="contact.html">Kontaktai</a>
+    <main class="cart-page">
 
-        </div>
+        <div class="container">
 
-        <div class="footer-column">
-
-            <h3>Užsakymai</h3>
-
-            <a href="tel:+37065088000">
-                <i class="fa-solid fa-phone"></i>
-                +370 650 88000
-            </a>
-
-            <a href="cart.html">
-                <i class="fa-solid fa-cart-shopping"></i>
+            <h1>
                 Jūsų krepšelis
-            </a>
+            </h1>
+
+            <div id="cartItems"></div>
+
+
+            <div class="cart-summary">
+
+                <div class="cart-summary__prices">
+
+                    <div class="cart-discount-notice">
+
+                        <i class="fa-solid fa-tag"></i>
+
+                        <span>
+                            20 % nuolaida pritaikyta automatiškai
+                        </span>
+
+                    </div>
+
+
+                    <div class="cart-price-summary">
+
+                        <div class="cart-price-row">
+
+                            <span>
+                                Prekių suma
+                            </span>
+
+                            <strong id="cartSubtotal">
+                                0,00 €
+                            </strong>
+
+                        </div>
+
+
+                        <div
+                            class="cart-price-row cart-price-row--discount"
+                        >
+
+                            <span>
+                                Nuolaida internetu −20 %
+                            </span>
+
+                            <strong id="cartDiscount">
+                                −0,00 €
+                            </strong>
+
+                        </div>
+
+
+                        <div
+                            class="cart-price-row cart-price-row--total"
+                        >
+
+                            <span>
+                                Mokėti
+                            </span>
+
+                            <strong id="cartTotal">
+                                0,00 €
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="pickup-notice">
+
+                    <i class="fa-solid fa-clock"></i>
+
+                    <span>
+                        Minimalus užsakymo paruošimo laikas –
+                        <strong>25 min.</strong>
+                    </span>
+
+                </div>
+
+
+                <a
+                    href="checkout.html"
+                    class="checkout-btn"
+                >
+                    Tęsti užsakymą
+                </a>
+
+            </div>
 
         </div>
 
-    </div>
+    </main>
 
-    <div class="container footer-bottom">
 
-        <span>
-            © <span class="current-year"></span> Vilniaus Traškis
-        </span>
+    <footer class="footer">
 
-        <span>Visos teisės saugomos</span>
+        <div class="container footer-grid">
 
-    </div>
+            <div class="footer-brand">
 
-</footer>
-<script src="js/script.js"></script>
-<script src="js/cart.js"></script>
+                <a
+                    href="index.html"
+                    class="logo"
+                >
+                    Vilniaus <span>Traškis</span>
+                </a>
 
+                <p>
+                    Traškūs kebabai, vištiena ir sotūs kompleksai
+                    greitam atsiėmimui Vilniuje.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Nuorodos
+                </h3>
+
+                <a href="index.html">
+                    Pradžia
+                </a>
+
+                <a href="menu.html">
+                    Meniu
+                </a>
+
+                <a href="reviews.html">
+                    Atsiliepimai
+                </a>
+
+                <a href="contact.html">
+                    Kontaktai
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Užsakymai
+                </h3>
+
+                <a href="tel:+37065088000">
+
+                    <i class="fa-solid fa-phone"></i>
+
+                    +370 650 88000
+
+                </a>
+
+                <a href="cart.html">
+
+                    <i class="fa-solid fa-cart-shopping"></i>
+
+                    Jūsų krepšelis
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="container footer-bottom">
+
+            <span>
+                ©
+                <span class="current-year"></span>
+                Vilniaus Traškis
+            </span>
+
+            <span>
+                Visos teisės saugomos
+            </span>
+
+        </div>
+
+    </footer>
+
+
+    <script src="js/script.js"></script>
+    <script src="js/cart.js"></script>
 
 </body>
 
