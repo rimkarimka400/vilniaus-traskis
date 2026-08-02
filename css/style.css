@@ -4546,4 +4546,64 @@ body:has(.sms-confirm-modal.active) .mobile-bottom-nav {
         width: 100%;
         text-align: center;
     }
+}.hero-buttons {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.hero-buttons .btn {
+    min-height: 58px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    padding: 0 34px;
+
+    border-radius: 999px;
+
+    text-decoration: none;
+    font-weight: 700;
+
+    transition:
+        transform 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.hero-buttons .btn-primary {
+    border: 1px solid #ff8a00;
+    background: #ff8a00;
+    color: #ffffff;
+}
+
+.hero-buttons .btn-primary:hover {
+    background: #ff9d28;
+    border-color: #ff9d28;
+    transform: translateY(-2px);
+}
+
+.hero-buttons .btn-outline {
+    border: 1px solid #ff8a00;
+    background: transparent;
+    color: #ffffff;
+}
+
+.hero-buttons .btn-outline:hover {
+    background: rgba(255, 138, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+    .hero-buttons {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .hero-buttons .btn {
+        width: 100%;
+    }
 }
