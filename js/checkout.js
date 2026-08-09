@@ -422,26 +422,17 @@ function createOrderMessage(
     const comment =
         formData.comment || "Nėra";
 
-    return `UŽSAKYMAS NR. ${orderNumber}
-
-Vardas: ${formData.name}
-Telefonas: ${formData.phone}
+    return  `Vardas: ${formData.name}
 
 UŽSAKYMAS:
 ${productsText}
 
-Prekių suma: ${formatPrice(subtotal)}
-Nuolaida internetu -20 %: -${formatPrice(discount)}
+Suma: ${formatPrice(subtotal)}
+-20%: -${formatPrice(discount)}
 MOKĖTI: ${formatPrice(total)}
 
-Atsiėmimo būdas:
-${formData.pickupType}
-
 Pageidaujamas laikas:
-${formData.pickupTime}
-
-Komentaras:
-${comment}`;
+${formData.pickupTime}`;
 }
 
 
