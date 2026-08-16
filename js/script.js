@@ -184,15 +184,6 @@ const products = [
         sauceCount: 1
     },
 
-    {
-        id: 13,
-        name: "Fish and Chips",
-        category: "main",
-        image: "images/menu/fish-and-chips.jpg",
-        description:
-            "Gruzdinta menkė tešloje, bulvytės, tartarų padažas.",
-        price: 9.50
-    },
 
     {
         id: 25,
