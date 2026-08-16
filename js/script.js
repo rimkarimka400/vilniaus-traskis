@@ -6,6 +6,7 @@
 const products = [
     {
         id: 1,
+        number: 1,
         name: "Traškūs vištienos sparneliai",
         category: "chicken",
         image: "images/menu/sparneliai.jpg",
@@ -23,6 +24,7 @@ const products = [
 
     {
         id: 2,
+        number: 2,
         name: "Traškios vištienos krūtinėlės juostelės",
         category: "chicken",
         image: "images/menu/juosteles.jpg",
@@ -37,9 +39,27 @@ const products = [
             }
         ]
     },
+{
+    id: 3,
+    number: 3,
+    name: "Traškūs vištienos peteliai",
+    category: "extras",
+    image: "images/menu/peteliai.jpg",
 
+    variants: [
+        {
+            name: "Maža porcija",
+            price: 6.10
+        },
+        {
+            name: "Didelė porcija",
+            price: 6.80
+        }
+    ]
+},
     {
-        id: 3,
+        id: 4,
+        number: 4,
         name: "Gruzdintos bulvytės",
         category: "chicken",
         image: "images/menu/bulvytes.jpg",
@@ -56,7 +76,8 @@ const products = [
     },
 
     {
-        id: 4,
+        id: 5,
+        number: 5,
         name: "Kapsalonas",
         category: "chicken",
         image: "images/menu/kapsalonas.jpg",
@@ -66,7 +87,8 @@ const products = [
     },
 
     {
-        id: 5,
+        id: 6,
+        number: 6,
         name: "Traškis Bowl",
         category: "chicken",
         image: "images/menu/traskis-bowl.jpg",
@@ -74,9 +96,27 @@ const products = [
             "Traški vištiena, bulvytės, padažas, sūris, svogūnai, jalapenai, skrudintas lavašas.",
         price: 9.70
     },
-
+{
+        id: 7,
+        number: 7,
+        name: "Gruzdinti kaimiški koldūnai 25 vnt.",
+        category: "main",
+        image:
+            "images/menu/gruzdinti-kaimiski-koldunai-25-vnt-su-suriu.jpg",
+        variants: [
+            {
+                name: "Be sūrio",
+                price: 7.00
+            },
+            {
+                name: "Su sūriu",
+                price: 8.00
+            }
+        ]
+    },
     {
-        id: 6,
+        id: 8,
+        number: 8,
         name: "Sparnelių kompleksas",
         category: "combos",
         image: "images/menu/sparneliu-kompleksas.jpg",
@@ -95,7 +135,8 @@ const products = [
     },
 
     {
-        id: 7,
+        id: 9,
+        number: 9,
         name: "Traškios vištienos krūtinėlės kompleksas",
         category: "combos",
         image: "images/menu/juosteliu-kompleksas.jpg",
@@ -112,35 +153,33 @@ const products = [
         ],
         drinkCount: 1
     },
+{
+    id: 10,
+    number: 10,
+    category: "combos",
+    number: "10",
+    name: "Traškių vištienos petelių kompleksas",
+    image: "images/menu/peteliai-kompleksas.jpg",
+
+    sauceCount: 1,
+    drinkCount: 1,
+
+    variants: [
+        {
+            name: "Maža porcija (5 vnt.)",
+            price: 8.90
+        },
+        {
+            name: "Didelė porcija (6 vnt.)",
+            price: 9.60
+        }
+    ]
+},
+    
 
     {
-        id: 8,
-        name: "Burgerio kompleksas",
-        category: "kompleksai",
-        image:
-            "images/menu/burgerio-kompleksas-su-traskia-vistiena.jpg",
-        description: "Didelis burgerio kompleksas su gėrimu.",
-        variants: [
-            {
-                name:
-                    "Burgeris su traškia vištiena, sūriu ir stiksais + gėrimas",
-                price: 8.50,
-                image:
-                    "images/menu/burgerio-kompleksas-su-traskia-vistiena.jpg"
-            },
-            {
-                name:
-                    "Burgeris su vištienos kebabo mėsa, stiksai + gėrimas",
-                price: 8.50,
-                image:
-                    "images/menu/burgerio-kompleksas-su-kebabo-mesa.jpg"
-            }
-        ],
-        drinkCount: 1
-    },
-
-    {
-        id: 9,
+        id: 11,
+        number: 11,
         name: "Traškio firminio kebabo kompleksas",
         category: "combos",
         image: "images/menu/firminio-kebabo-kompleksas.jpg",
@@ -151,7 +190,8 @@ const products = [
     },
 
     {
-        id: 10,
+        id: 12,
+        number: 12,
         name: "Kebabo kompleksas",
         category: "combos",
         image: "images/menu/kebabo-kompleksas.jpg",
@@ -162,8 +202,32 @@ const products = [
         drinkCount: 1
     },
 
+
+{
+    id: 13,
+    number: 13,
+    name: "Burgerio kompleksas su vištienos kebabo mėsa",
+    category: "kompleksai",
+    image: "images/menu/burgerio-kompleksas-su-kebabo-mesa.jpg",
+    description: "Burgeris su vištienos kebabo mėsa, stiksais ir gėrimu.",
+    price: 8.50,
+    drinkCount: 1
+},
+
+
+{
+    id: 14,
+    number: 14,
+    name: "Burgerio kompleksas su traškia vištiena",
+    category: "kompleksai",
+    image: "images/menu/burgerio-kompleksas-su-traskia-vistiena.jpg",
+    description: "Burgeris su traškia vištiena, sūriu, stiksais ir gėrimu.",
+    price: 8.50,
+    drinkCount: 1
+},
     {
-        id: 11,
+        id: 15,
+        number: 15,
         name: "Didelis Traškio firminis kebabas",
         category: "main",
         image: "images/menu/firminis-kebabas.jpg",
@@ -174,7 +238,8 @@ const products = [
     },
 
     {
-        id: 12,
+        id: 16,
+        number: 16,
         name: "Didelis vištienos kebabas",
         category: "kebabai",
         image: "images/menu/didelis-vistienos-kebabas.jpg",
@@ -185,26 +250,11 @@ const products = [
     },
 
 
-    {
-        id: 25,
-        name: "Gruzdinti kaimiški koldūnai 25 vnt.",
-        category: "main",
-        image:
-            "images/menu/gruzdinti-kaimiski-koldunai-25-vnt-su-suriu.jpg",
-        variants: [
-            {
-                name: "Be sūrio",
-                price: 7.00
-            },
-            {
-                name: "Su sūriu",
-                price: 8.00
-            }
-        ]
-    },
+    
 
     {
-        id: 14,
+        id: 17,
+        number: 17,
         name: "Burgeris",
         category: "burgeriai",
         image:
@@ -224,9 +274,29 @@ const products = [
             }
         ]
     },
+{
+    id: 19,
+    number: 19,
+    name: "Kepti užkandžiai",
+    category: "extras",
+    image: "images/menu/mozzarella-lazdeles.jpg",
 
+    variants: [
+        {
+            name: "Mozzarella lazdelės",
+            price: 7.00,
+            image: "images/menu/mozzarella-lazdeles.jpg"
+        },
+        {
+            name: "Jalapenai su čederio sūriu",
+            price: 7.00,
+            image: "images/menu/jalapenai-su-cederio-suriu.jpg"
+        }
+    ]
+},
     {
-        id: 15,
+        id: 22,
+        number: 22,
         name: "12 sparnelių rinkinys",
         category: "sets",
         image: "images/menu/14-sparneliu.jpg",
@@ -236,9 +306,21 @@ const products = [
         sauceCount: 1,
         drinkCount: 1
     },
-
+{
+        id: 23,
+        number: 23,
+        name: "12 vištienos krūtinėlės juostelių rinkinys",
+        category: "sets",
+        image: "images/menu/14-juosteliu.jpg",
+        description:
+            "12 vištienos krūtinėlės juostelių, 2 bulvytės + 2 gėrimai + 2 padažai.",
+        price: 18.00,
+        sauceCount: 1,
+        drinkCount: 1
+    },
     {
-        id: 16,
+        id: 24,
+        number: 24,
         name: "12 petelių rinkinys",
         category: "sets",
         image: "images/menu/18-sparneliu.jpg",
@@ -250,31 +332,8 @@ const products = [
     },
 
     {
-        id: 17,
-        name: "12 vištienos krūtinėlės juostelių rinkinys",
-        category: "sets",
-        image: "images/menu/14-juosteliu.jpg",
-        description:
-            "12 vištienos krūtinėlės juostelių, 2 bulvytės + 2 gėrimai + 2 padažai.",
-        price: 18.00,
-        sauceCount: 1,
-        drinkCount: 1
-    },
-
-    {
-        id: 18,
-        name: "18 vištienos krūtinėlės juostelių rinkinys",
-        category: "sets",
-        image: "images/menu/18-juosteliu.jpg",
-        description:
-            "18 vištienos krūtinėlės juostelių, 3 bulvytės + 3 gėrimai + 3 padažai.",
-        price: 25.50,
-        sauceCount: 1,
-        drinkCount: 1
-    },
-
-    {
-        id: 19,
+        id: 25,
+        number: 25,
         name: "18 vnt. sparnelių rinkinys",
         category: "sets",
         image: "images/menu/mazasis-miksas.jpg",
@@ -286,7 +345,23 @@ const products = [
     },
 
     {
-        id: 20,
+        id: 26,
+        number: 26,
+        name: "18 vištienos krūtinėlės juostelių rinkinys",
+        category: "sets",
+        image: "images/menu/18-juosteliu.jpg",
+        description:
+            "18 vištienos krūtinėlės juostelių, 3 bulvytės + 3 gėrimai + 3 padažai.",
+        price: 25.50,
+        sauceCount: 1,
+        drinkCount: 1
+    },
+
+    
+
+    {
+        id: 27,
+        number: 27,
         name: "18 vnt. vištienos petelių rinkinys",
         category: "sets",
         image: "images/menu/didysis-miksas.jpg",
@@ -297,33 +372,16 @@ const products = [
         drinkCount: 1
     },
 
+    
+
     {
         id: 21,
-        name: "Mozzarella lazdelės",
-        category: "extras",
-        image: "images/menu/mozzarella-lazdeles.jpg",
-        price: 7.00
-    },
-
-    {
-        id: 22,
-        name: "Jalapenai su čederio sūriu",
-        category: "extras",
-        image: "images/menu/jalapenai-su-cederio-suriu.jpg",
-        price: 7.00
-    },
-
-    {
-        id: 23,
+        number: 21,
         name: "Padažas",
         category: "extras",
         image: "images/menu/padazai/tartaru.jpg",
         variants: [
-            {
-                name: "Tartarų padažas",
-                price: 0.70,
-                image: "images/menu/padazai/tartaru.jpg"
-            },
+        
             {
                 name: "Agurkinis padažas",
                 price: 0.70,
@@ -343,7 +401,8 @@ const products = [
     },
 
     {
-        id: 24,
+        id: 20,
+        number: 20,
         name: "Gėrimas",
         category: "extras",
         image: "images/menu/gerimai/coca-cola-pepsi.jpg",
@@ -385,7 +444,6 @@ const products = [
 window.products = products;
 
 const SAUCES = [
-    "Tartarų padažas",
     "Agurkinis padažas",
     "Česnakinis padažas",
     "BBQ padažas"
@@ -863,23 +921,26 @@ function addProductToCart(
         existingItem.quantity += 1;
     } else {
         cart.push({
-            productId: product.id,
-            configurationKey,
-            name: selected.name,
-            price: selected.price,
-            image: selected.image,
-            quantity: 1,
-            sauces: selected.sauces,
-            drinks: selected.drinks,
+    productId: product.id,
+    orderNumber: product.number || product.id,
 
-            sauce:
-                selected.sauces[0] ||
-                "",
+    configurationKey,
 
-            drink:
-                selected.drinks[0] ||
-                ""
-        });
+    name: selected.name,
+    price: selected.price,
+    image: selected.image,
+
+    quantity: 1,
+
+    sauces: selected.sauces,
+    drinks: selected.drinks,
+
+    sauce:
+        selected.sauces[0] || "",
+
+    drink:
+        selected.drinks[0] || ""
+});
     }
 
     saveCart(cart);

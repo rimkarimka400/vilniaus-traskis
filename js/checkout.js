@@ -2,7 +2,7 @@
    VILNIAUS TRAŠKIS – CHECKOUT
 ========================================= */
 
-const RESTAURANT_PHONE = "+37066617335";
+const RESTAURANT_PHONE = "+37065088000";
 const CART_STORAGE_KEY = "traskisCart";
 const DISCOUNT_RATE = 0.20;
 const MIN_PREPARATION_MINUTES = 25;
@@ -362,77 +362,215 @@ function generateOrderNumber() {
 /* =========================================
    SMS TEKSTAS
 ========================================= */
+function getSauceLetter(sauce) {
 
+    switch (sauce) {
+
+        case "Tartarų":
+        case "Tartarų padažas":
+            return "T";
+
+        case "Agurkinis":
+        case "Agurkinis padažas":
+            return "A";
+
+        case "Česnakinis":
+        case "Česnakinis padažas":
+            return "Č";
+
+        case "BBQ":
+        case "BBQ padažas":
+            return "B";
+
+        default:
+            return "";
+    }
+
+}
+
+function getDrinkNumber(drink) {
+
+    switch (drink) {
+
+        case "Coca-Cola":
+        case "Coca-Cola / Pepsi":
+            return "1";
+
+        case "Sprite":
+        case "Sprite / 7UP":
+            return "2";
+
+        case "Fanta":
+        case "Fanta / Mirinda":
+            return "3";
+
+        case "Gazuotas vanduo":
+            return "4";
+
+        case "Negazuotas vanduo":
+            return "5";
+
+        default:
+            return "";
+    }
+
+}
 function createOrderMessage(
     formData,
     cart,
     orderNumber
 ) {
+
     const productsText = cart
         .map(item => {
-            const price =
-                Number(item.price) || 0;
 
-            const quantity =
-                Math.max(
-                    1,
-                    Number(item.quantity) || 1
-                );
+let line = `${item.orderNumber}`;
 
-            const itemTotal =
-                price * quantity;
+if (item.name.includes("Maža")) {
+    line += "M";
+}
 
-            const { sauces, drinks } =
-                getItemChoices(item);
+if (item.name.includes("Didelė")) {
+    line += "D";
+}
 
-            const lines = [
-                `${quantity} x ${
-                    item.name || "Prekė"
-                } – ${formatPrice(itemTotal)}`
-            ];
+if (
+    item.name.includes("+ sūris") ||
+    item.name.includes("sūriu")
+) {
+    line += "S";
+}if (item.orderNumber == 17) {
 
-            if (sauces.length) {
-                lines.push(
-                    `${
-                        sauces.length === 1
-                            ? "Padažas"
-                            : "Padažai"
-                    }: ${sauces.join(", ")}`
-                );
+    if (item.name.includes("kebabo")) {
+        line += "K";
+    }
+
+    if (item.name.includes("traškia")) {
+        line += "T";
+    }
+
+}// Atskirai perkami padažai (21)
+if (item.orderNumber == 21) {
+
+    if (item.name.includes("Tartar")) line += " T";
+    if (item.name.includes("Agurkin")) line += " A";
+    if (item.name.includes("Česn")) line += " Č";
+    if (item.name.includes("BBQ")) line += " B";
+
+}
+
+// Atskirai perkami gėrimai (20)
+if (item.orderNumber == 20) {
+
+    if (item.name.includes("Coca")) line += " 1";
+    if (item.name.includes("Sprite")) line += " 2";
+    if (item.name.includes("Fanta")) line += " 3";
+    if (item.name.includes("Gazuotas")) line += " 4";
+    if (item.name.includes("Negazuotas")) line += " 5";
+
+}
+if (item.orderNumber == 19) {
+
+    if (item.name.includes("Jalapenai")) {
+        line += " JAL";
+    }
+
+}
+
+
+line += ` x${item.quantity}`;            if (item.sauce) {
+
+                let sauce = "";
+
+                switch (item.sauce) {
+
+                    case "Tartarų":
+                    case "Tartarų padažas":
+                        sauce = "T";
+                        break;
+
+                    case "Agurkinis":
+                    case "Agurkinis padažas":
+                        sauce = "A";
+                        break;
+
+                    case "Česnakinis":
+                    case "Česnakinis padažas":
+                        sauce = "Č";
+                        break;
+
+                    case "BBQ":
+                    case "BBQ padažas":
+                        sauce = "B";
+                        break;
+                }
+
+                if (sauce) {
+                    line += ` ${sauce}`;
+                }
+
             }
 
-            if (drinks.length) {
-                lines.push(
-                    `${
-                        drinks.length === 1
-                            ? "Gėrimas"
-                            : "Gėrimai"
-                    }: ${drinks.join(", ")}`
-                );
+            if (item.drink) {
+
+                let drink = "";
+
+                switch (item.drink) {
+
+                    case "Coca-Cola":
+                    case "Coca-Cola / Pepsi":
+                        drink = "1";
+                        break;
+
+                    case "Sprite":
+                    case "Sprite / 7UP":
+                        drink = "2";
+                        break;
+
+                    case "Fanta":
+                    case "Fanta / Mirinda":
+                        drink = "3";
+                        break;
+
+                    case "Gazuotas vanduo":
+                        drink = "4";
+                        break;
+
+                    case "Negazuotas vanduo":
+                        drink = "5";
+                        break;
+                }
+
+                if (drink) {
+
+                    if (item.sauce)
+                        line += `-${drink}`;
+                    else
+                        line += ` ${drink}`;
+
+                }
+
             }
 
-            return lines.join("\n");
+            return line;
+
         })
-        .join("\n\n");
+        .join("\n");
 
     const subtotal = calculateSubtotal(cart);
     const discount = calculateDiscount(subtotal);
     const total = subtotal - discount;
 
-    const comment =
-        formData.comment || "Nėra";
+    return (
+        formData.name +
+        "\n\n" +
+        productsText +
+        "\n\n" +
+        formatPrice(total) +
+        "\n\n" +
+        formData.pickupTime
+    );
 
-    return  `Vardas: ${formData.name}
-
-UŽSAKYMAS:
-${productsText}
-
-Suma: ${formatPrice(subtotal)}
--20%: -${formatPrice(discount)}
-MOKĖTI: ${formatPrice(total)}
-
-Pageidaujamas laikas:
-${formData.pickupTime}`;
 }
 
 
@@ -441,22 +579,11 @@ ${formData.pickupTime}`;
 ========================================= */
 
 function createSmsLink(message) {
-    const encodedMessage =
-        encodeURIComponent(message);
 
-    const isIOS =
-        /iPad|iPhone|iPod/.test(
-            navigator.userAgent
-        );
+    return `sms:${RESTAURANT_PHONE}?body=${encodeURIComponent(message)}`;
 
-    const separator =
-        isIOS ? "&" : "?";
-
-    return (
-        `sms:${RESTAURANT_PHONE}` +
-        `${separator}body=${encodedMessage}`
-    );
 }
+
 
 
 function isMobileDevice() {
