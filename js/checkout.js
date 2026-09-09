@@ -29,7 +29,7 @@ const orderSentButton = document.querySelector("#orderSentBtn");
 const smsConfirmModal = document.querySelector("#smsConfirmModal");
 const smsSentButton = document.querySelector("#smsSentBtn");
 const smsNotSentButton = document.querySelector("#smsNotSentBtn");
-
+const ONLINE_ORDER_ENABLED = false;
 let smsConfirmationShown = false;
 
 
@@ -578,12 +578,11 @@ line += ` x${item.quantity}`;            if (item.sauce) {
    SMS NUORODA
 ========================================= */
 
-function createSmsLink(message) {
+function createSmsLink(message, phoneNumber) {
 
-    return `sms:${RESTAURANT_PHONE}?body=${encodeURIComponent(message)}`;
+    return `sms:${phoneNumber || RESTAURANT_PHONE}?body=${encodeURIComponent(message)}`;
 
 }
-
 
 
 function isMobileDevice() {
@@ -946,23 +945,139 @@ orderForm?.addEventListener(
             );
         }
 
-        if (isMobileDevice()) {
-            sessionStorage.setItem(
-                "traskisPendingSmsOrder",
-                "true"
-            );
+      const kioskModal = document.createElement("div");
 
-            window.location.href =
-                smsLink;
-        } else {
-            showQrCode(
-                smsLink,
-                orderNumber
-            );
-        }
+kioskModal.innerHTML = `
+    <div style="
+        position:fixed;
+        inset:0;
+        background:rgba(0,0,0,.7);
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        z-index:99999;
+    ">
+
+        <div style="
+            background:#1b1b1b;
+            color:#fff;
+            width:90%;
+            max-width:430px;
+            border-radius:15px;
+            padding:30px;
+            text-align:center;
+        ">
+
+            <h2 style="margin-bottom:10px;">
+                Pasirinkite kebabinę
+            </h2>
+
+            <p style="margin-bottom:25px;color:#aaa;">
+                Į kurią kebabinę siunčiate užsakymą?
+            </p>
+
+            <button
+                id="orderJust"
+                type="button"
+                style="
+                    width:100%;
+                    padding:16px;
+                    margin-bottom:15px;
+                    font-size:18px;
+                    cursor:pointer;
+                "
+            >
+                📍 Justiniškės
+                <br>
+                066617557
+            </button>
+
+            <button
+                id="orderRygos"
+                type="button"
+                style="
+                    width:100%;
+                    padding:16px;
+                    margin-bottom:15px;
+                    font-size:18px;
+                    cursor:pointer;
+                "
+            >
+                📍 Rygos
+                <br>
+                066617558
+            </button>
+
+            <button
+                id="closeKioskModal"
+                type="button"
+                style="
+                    margin-top:10px;
+                    background:none;
+                    border:none;
+                    color:#aaa;
+                    cursor:pointer;
+                "
+            >
+                Uždaryti
+            </button>
+
+        </div>
+    </div>
+`;
+
+document.body.appendChild(kioskModal);
+
+function sendOrderToKiosk(phoneNumber) {
+
+    const selectedSmsLink =
+        createSmsLink(
+            orderMessage,
+            phoneNumber
+        );
+
+    kioskModal.remove();
+
+    if (isMobileDevice()) {
+
+        sessionStorage.setItem(
+            "traskisPendingSmsOrder",
+            "true"
+        );
+
+        window.location.href =
+            selectedSmsLink;
+
+    } else {
+
+        showQrCode(
+            selectedSmsLink,
+            orderNumber
+        );
+
+    }
+}
+
+document
+    .getElementById("orderJust")
+    .onclick = () => {
+        sendOrderToKiosk("066617557");
+    };
+
+document
+    .getElementById("orderRygos")
+    .onclick = () => {
+        sendOrderToKiosk("066617558");
+    };
+
+document
+    .getElementById("closeKioskModal")
+    .onclick = () => {
+        kioskModal.remove();
+    };
+
     }
 );
-
 
 /* =========================================
    QR LANGO VALDYMAS
