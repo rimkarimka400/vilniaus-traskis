@@ -422,140 +422,22 @@ function createOrderMessage(
 ) {
 
     const productsText = cart
-        .map(item => {
+    .map(item => {
 
-let line = `${item.orderNumber}`;
+        let line = `${item.name} x${item.quantity}`;
 
-if (item.name.includes("Maža")) {
-    line += "M";
-}
+        if (item.sauce) {
+            line += ` | Padažas: ${item.sauce}`;
+        }
 
-if (item.name.includes("Didelė")) {
-    line += "D";
-}
+        if (item.drink) {
+            line += ` | Gėrimas: ${item.drink}`;
+        }
 
-if (
-    item.name.includes("+ sūris") ||
-    item.name.includes("sūriu")
-) {
-    line += "S";
-}if (item.orderNumber == 17) {
+        return line;
 
-    if (item.name.includes("kebabo")) {
-        line += "K";
-    }
-
-    if (item.name.includes("traškia")) {
-        line += "T";
-    }
-
-}// Atskirai perkami padažai (21)
-if (item.orderNumber == 21) {
-
-    if (item.name.includes("Tartar")) line += " T";
-    if (item.name.includes("Agurkin")) line += " A";
-    if (item.name.includes("Česn")) line += " Č";
-    if (item.name.includes("BBQ")) line += " B";
-
-}
-
-// Atskirai perkami gėrimai (20)
-if (item.orderNumber == 20) {
-
-    if (item.name.includes("Coca")) line += " 1";
-    if (item.name.includes("Sprite")) line += " 2";
-    if (item.name.includes("Fanta")) line += " 3";
-    if (item.name.includes("Gazuotas")) line += " 4";
-    if (item.name.includes("Negazuotas")) line += " 5";
-
-}
-if (item.orderNumber == 19) {
-
-    if (item.name.includes("Jalapenai")) {
-        line += " JAL";
-    }
-
-}
-
-
-line += ` x${item.quantity}`;            if (item.sauce) {
-
-                let sauce = "";
-
-                switch (item.sauce) {
-
-                    case "Tartarų":
-                    case "Tartarų padažas":
-                        sauce = "T";
-                        break;
-
-                    case "Agurkinis":
-                    case "Agurkinis padažas":
-                        sauce = "A";
-                        break;
-
-                    case "Česnakinis":
-                    case "Česnakinis padažas":
-                        sauce = "Č";
-                        break;
-
-                    case "BBQ":
-                    case "BBQ padažas":
-                        sauce = "B";
-                        break;
-                }
-
-                if (sauce) {
-                    line += ` ${sauce}`;
-                }
-
-            }
-
-            if (item.drink) {
-
-                let drink = "";
-
-                switch (item.drink) {
-
-                    case "Coca-Cola":
-                    case "Coca-Cola / Pepsi":
-                        drink = "1";
-                        break;
-
-                    case "Sprite":
-                    case "Sprite / 7UP":
-                        drink = "2";
-                        break;
-
-                    case "Fanta":
-                    case "Fanta / Mirinda":
-                        drink = "3";
-                        break;
-
-                    case "Gazuotas vanduo":
-                        drink = "4";
-                        break;
-
-                    case "Negazuotas vanduo":
-                        drink = "5";
-                        break;
-                }
-
-                if (drink) {
-
-                    if (item.sauce)
-                        line += `-${drink}`;
-                    else
-                        line += ` ${drink}`;
-
-                }
-
-            }
-
-            return line;
-
-        })
-        .join("\n");
+    })
+    .join("\n");
 
     const subtotal = calculateSubtotal(cart);
     const discount = calculateDiscount(subtotal);

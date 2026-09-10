@@ -74,7 +74,32 @@ const products = [
             }
         ]
     },
+{
+    id: 25,
+    category: "snacks",
+    number: "25",
+    name: "Hot Dog",
+    image: "images/menu/hot-dog.jpg",
+    price: 2.50
+},
 
+{
+    id: 26,
+    category: "snacks",
+    number: "26",
+    name: "Prancūziškas dešrainis",
+    image: "images/menu/prancuziskas-desrainis.jpg",
+    price: 2.50
+},
+
+{
+    id: 27,
+    category: "snacks",
+    number: "27",
+    name: "Bagetė",
+    image: "images/menu/bagete.jpg",
+    price: 3.50
+},
     {
         id: 5,
         number: 5,
@@ -201,7 +226,50 @@ const products = [
         sauceCount: 1,
         drinkCount: 1
     },
+{
+    id: 28,
+    category: "kebabai",
+    number: "28",
+    name: "Jautienos kebabas",
+    image: "images/menu/jautienos-kebabas.jpg",
+    price: 7.50,
 
+    sauces: [
+        "Tartarų",
+        "Agurkinis",
+        "Česnakinis",
+        "BBQ"
+    ],
+
+    sauceCount: 1
+},
+
+{
+    id: 29,
+    category: "kompleksai",
+    number: "29",
+    name: "Jautienos kebabo kompleksas",
+    image: "images/menu/jautienos-kebabo-kompleksas.jpg",
+    price: 9.90,
+
+    sauces: [
+        "Tartarų",
+        "Agurkinis",
+        "Česnakinis",
+        "BBQ"
+    ],
+
+    drinks: [
+        "Coca-Cola",
+        "Sprite",
+        "Fanta",
+        "Gazuotas vanduo",
+        "Negazuotas vanduo"
+    ],
+
+    sauceCount: 1,
+    drinkCount: 1
+},
 
 {
     id: 13,
@@ -262,13 +330,13 @@ const products = [
         variants: [
             {
                 name: "Burgeris su vištienos kebabo mėsa",
-                price: 5.50,
+                price: 4,
                 image:
                     "images/menu/burgeris-su-vistienos-kebabo-mesa.jpg"
             },
             {
                 name: "Burgeris su traškia vištiena ir sūriu",
-                price: 5.50,
+                price: 4,
                 image:
                     "images/menu/burgeris-su-traskia-vistiena-ir-suriu.jpg"
             }
