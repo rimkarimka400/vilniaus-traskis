@@ -4606,4 +4606,6 @@ body:has(.sms-confirm-modal.active) .mobile-bottom-nav {
     .hero-buttons .btn {
         width: 100%;
     }
+}.location-row {
+    display: contents;
 }
