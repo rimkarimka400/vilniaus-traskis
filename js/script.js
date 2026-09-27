@@ -199,6 +199,31 @@ const products = [
             price: 9.60
         }
     ]
+},{
+    id: 30,
+    category: "snacks",
+    number: "30",
+    name: "Sriubytė su kebabo mėsa",
+    image: "images/menu/sriubyte-su-kebabo-mesa.jpg",
+    price: 4.50
+},
+
+{
+    id: 31,
+    category: "snacks",
+    number: "31",
+    name: "Kijevo kotletas su bulvytėmis ir daržovėmis",
+    image: "images/menu/kijevo-kotletas.jpg",
+    price: 8.00,
+
+    sauces: [
+        "Tartarų",
+        "Agurkinis",
+        "Česnakinis",
+        "BBQ"
+    ],
+
+    sauceCount: 1
 },
     
 
