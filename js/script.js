@@ -224,6 +224,73 @@ const products = [
     ],
 
     sauceCount: 1
+},{
+    id: 32,
+    category: "snacks",
+    number: "32",
+    name: "Traškios vištienos sparneliai su bulvytėmis ir daržovėmis",
+    image: "images/menu/traskios-vistienos-sparneliai.jpg",
+    price: 8.50,
+
+    sauces: [
+        "Tartarų",
+        "Agurkinis",
+        "Česnakinis",
+        "BBQ"
+    ],
+
+    sauceCount: 1
+},{
+    id: 33,
+    category: "snacks",
+    number: "33",
+    name: "Grill vištienos sparneliai su bulvytėmis ir daržovėmis",
+    image: "images/menu/grill-vistienos-sparneliai.jpg",
+    price: 8.50,
+
+    sauces: [
+        "Tartarų",
+        "Agurkinis",
+        "Česnakinis",
+        "BBQ"
+    ],
+
+    sauceCount: 1,
+    location: "rygos"
+},{
+    id: 34,
+    category: "snacks",
+    number: "34",
+    name: "Kiaulienos sprandinės šašlykas su bulvytėmis ir daržovėmis",
+    image: "images/menu/kiaulienos-sprandines-saslykas.jpg",
+    price: 10.50,
+
+    sauces: [
+        "Tartarų",
+        "Agurkinis",
+        "Česnakinis",
+        "BBQ"
+    ],
+
+    sauceCount: 1,
+    location: "rygos"
+},{
+    id: 35,
+    category: "snacks",
+    number: "35",
+    name: "Vištienos filė iešmelis su bulvytėmis ir daržovėmis",
+    image: "images/menu/vistienos-file-iesmelis.jpg",
+    price: 10.50,
+
+    sauces: [
+        "Tartarų",
+        "Agurkinis",
+        "Česnakinis",
+        "BBQ"
+    ],
+
+    sauceCount: 1,
+    location: "rygos"
 },
     
 
@@ -1027,6 +1094,9 @@ function addProductToCart(
 
     sauces: selected.sauces,
     drinks: selected.drinks,
+    
+    location:
+        product.location || "all",
 
     sauce:
         selected.sauces[0] || "",

@@ -941,8 +941,30 @@ function sendOrderToKiosk(phoneNumber) {
 }
 
 document
+
     .getElementById("orderJust")
     .onclick = () => {
+
+        const rygosOnlyItems =
+            cart.filter(item => {
+                return item.location === "rygos";
+            });
+
+        if (rygosOnlyItems.length > 0) {
+
+            const names = rygosOnlyItems
+                .map(item => `• ${item.name}`)
+                .join("\n");
+
+            alert(
+                "Šių patiekalų galima užsisakyti tik Rygos g. 43:\n\n" +
+                names +
+                "\n\nPasirinkite Rygos g. 43."
+            );
+
+            return;
+        }
+
         sendOrderToKiosk("066617557");
     };
 
