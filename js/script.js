@@ -4,62 +4,327 @@
 ========================================= */
 
 const products = [
-    {
-        id: 1,
-        number: 1,
-        name: "Traškūs vištienos sparneliai",
-        category: "chicken",
-        image: "images/menu/sparneliai.jpg",
-        variants: [
-            {
-                name: "Maža porcija – 5 vnt.",
-                price: 5.40
-            },
-            {
-                name: "Didelė porcija – 6 vnt.",
-                price: 6.10
-            }
-        ]
-    },
+    
 
-    {
-        id: 2,
-        number: 2,
-        name: "Traškios vištienos krūtinėlės juostelės",
-        category: "chicken",
-        image: "images/menu/juosteles.jpg",
-        variants: [
-            {
-                name: "Maža porcija – 5 vnt.",
-                price: 6.10
-            },
-            {
-                name: "Didelė porcija – 6 vnt.",
-                price: 6.80
-            }
-        ]
-    },
+   
+{
+    id: 1,
+    category: "snacks",
+    number: "1",
+    name: "Kiaulienos sprandinės šašlykas su bulvytėmis ir daržovėmis",
+    image: "images/menu/kiaulienos-sprandines-saslykas.jpg",
+    price: 9.00,
+
+    sauces: [
+        "Tartarų",
+        "Agurkinis",
+        "Česnakinis",
+        "BBQ"
+    ],
+
+    sauceCount: 1,
+    location: "rygos"
+},
+{
+    id: 2,
+    category: "snacks",
+    number: "2",
+    name: "Vištienos filė iešmelis su bulvytėmis ir daržovėmis",
+    image: "images/menu/vistienos-file-iesmelis.jpg",
+    price: 9.00,
+
+    sauces: [
+        "Tartarų",
+        "Agurkinis",
+        "Česnakinis",
+        "BBQ"
+    ],
+
+    sauceCount: 1,
+    location: "rygos"
+},
 {
     id: 3,
-    number: 3,
-    name: "Traškūs vištienos peteliai",
-    category: "extras",
-    image: "images/menu/peteliai.jpg",
+    category: "snacks",
+    number: "3",
+    name: "Grill vištiena",
+    image: "images/menu/grill-vistiena.jpg",
+    price: 9.00,
+
+    sauces: [
+        "Tartarų",
+        "Agurkinis",
+        "Česnakinis",
+        "BBQ"
+    ],
+
+    sauceCount: 1,
+    location: "rygos"
+},
+{
+    id: 4,
+    category: "snacks",
+    number: "4",
+    name: "Hot Dog",
+    image: "images/menu/hot-dog.jpg",
+    price: 2.50
+},
+{
+    id: 5,
+    category: "snacks",
+    number: "5",
+    name: "Prancūziškas dešrainis",
+    image: "images/menu/prancuziskas-desrainis.jpg",
+    price: 2.50
+}, 
+{
+    id: 6,
+    category: "snacks",
+    number: "6",
+    name: "Bagetė",
+    image: "images/menu/bagete.jpg",
+    price: 3.50
+},
+{
+    id: 7,
+    category: "kebabai",
+    number: "7",
+    name: "Kebabas su traškia vištiena",
+    image: "images/menu/kebabas-su-traskia-vistiena.jpg",
+
+    description: "Pasirinkite kebabo dydį arba kompleksą.",
 
     variants: [
         {
-            name: "Maža porcija",
-            price: 6.10
+            name: "Mažas kebabas",
+            price: 5.50,
+            combo: false
         },
         {
-            name: "Didelė porcija",
-            price: 6.80
+            name: "Didelis kebabas",
+            price: 7.00,
+            combo: false
+        },
+        {
+            name: "Mažas kompleksas",
+            price: 8.50,
+            combo: true
+        },
+        {
+            name: "Didelis kompleksas",
+            price: 9.50,
+            combo: true
+        }
+    ],
+
+    sauceCount: 1,
+    drinkCount: 1,
+    drinkOnlyForCombo: true
+},{
+    id: 8,
+    category: "kebabai",
+    number: "8",
+    name: "Vištienos kebabas",
+    image: "images/menu/didelis-vistienos-kebabas.jpg",
+
+    description: "Pasirinkite kebabo dydį arba kompleksą.",
+
+    variants: [
+        {
+            name: "Mažas kebabas",
+            price: 5.50,
+            combo: false
+        },
+        {
+            name: "Didelis kebabas",
+            price: 7.00,
+            combo: false
+        },
+        {
+            name: "Mažas kompleksas",
+            price: 8.50,
+            combo: true
+        },
+        {
+            name: "Didelis kompleksas",
+            price: 9.50,
+            combo: true
+        }
+    ],
+
+    sauceCount: 1,
+    drinkCount: 1,
+    drinkOnlyForCombo: true
+},
+{
+    id: 9,
+    category: "kebabai",
+    number: "9",
+    name: "Jautienos kebabas",
+    image: "images/menu/jautienos-kebabas.jpg",
+
+    description: "Pasirinkite kebabo dydį arba kompleksą.",
+
+    variants: [
+        {
+            name: "Mažas kebabas",
+            price: 5.50,
+            combo: false
+        },
+        {
+            name: "Didelis kebabas",
+            price: 7.00,
+            combo: false
+        },
+        {
+            name: "Mažas kompleksas",
+            price: 8.50,
+            combo: true
+        },
+        {
+            name: "Didelis kompleksas",
+            price: 9.50,
+            combo: true
+        }
+    ],
+
+    sauceCount: 1,
+    drinkCount: 1,
+    drinkOnlyForCombo: true
+},
+{
+    id: 10,
+    category: "kebabai",
+    number: "10",
+    name: "Kebabas lėkštėje",
+    image: "images/menu/kebabas-leksteje.jpg",
+
+    description: "Kebabas lėkštėje su pasirinkta mėsa.",
+
+    variants: [
+        {
+            name: "Su jautiena",
+            price: 8.00
+        },
+        {
+            name: "Su vištiena",
+            price: 8.00
+        }
+    ]
+},
+  {
+        id: 11,
+        number: 11,
+        name: "Kapsalonas",
+        category: "chicken",
+        image: "images/menu/kapsalonas.jpg",
+        description:
+            "Gruzdintos bulvytės, traški vištiena, padažas, sūris, svogūnai, jalapenai.",
+        price: 8.50
+    },
+    {
+    id: 12,
+    category: "burgeriai",
+    number: "12",
+    name: "Burgeris su traškia vištiena",
+    image: "images/menu/burgeris-su-traskia-vistiena-ir-suriu.jpg",
+
+    description: "Pasirinkite burgerį arba kompleksą su bulvytėmis ir gėrimu.",
+
+    variants: [
+        {
+            name: "Burgeris",
+            price: 4.50,
+            combo: false
+        },
+        {
+            name: "Burgerio kompleksas",
+            price: 7.50,
+            combo: true,
+            image: "images/menu/burgerio-kompleksas-su-traskia-vistiena.jpg"
+        }
+    ],
+
+    drinkCount: 1,
+    drinkOnlyForCombo: true
+},
+{
+    id: 13,
+    number: 13,
+    name: "Gruzdinti kaimiški koldūnai",
+    category: "main",
+    image: "images/menu/gruzdinti-kaimiski-koldunai-25-vnt-su-suriu.jpg",
+
+    description: "Pasirinkite porcijos dydį ir ar norite sūrio.",
+
+    variants: [
+        {
+            name: "Maža porcija 15 vnt. – be sūrio",
+            price: 5.00
+        },
+        {
+            name: "Maža porcija 15 vnt. – su sūriu",
+            price: 6.00
+        },
+        {
+            name: "Didelė porcija 25 vnt. – be sūrio",
+            price: 7.00
+        },
+        {
+            name: "Didelė porcija 25 vnt. – su sūriu",
+            price: 8.00
         }
     ]
 },
     {
-        id: 4,
-        number: 4,
+    id: 14,
+    category: "snacks",
+    number: "14",
+    name: "Sriubytė su kebabo mėsa",
+    image: "images/menu/sriubyte-su-kebabo-mesa.jpg",
+
+    variants: [
+        {
+            name: "Su vištiena",
+            price: 3.00
+        },
+        {
+            name: "Su jautiena",
+            price: 3.00
+        }
+    ]
+},
+{
+    id: 15,
+    category: "snacks",
+    number: "15",
+    name: "Kijevo kotletas su bulvytėmis ir daržovėmis",
+    image: "images/menu/kijevo-kotletas.jpg",
+    price: 8.00,
+
+    sauces: [
+        "Tartarų",
+        "Agurkinis",
+        "Česnakinis",
+        "BBQ"
+    ],
+
+    sauceCount: 1
+},
+{
+    id: 16,
+    category: "snacks",
+    number: "16",
+    name: "Traški vištiena su bulvytėmis ir salotomis",
+    image: "images/menu/traski-vistiena-su-bulvytemis-ir-salotomis.jpg",
+    description: "Traški vištiena su gruzdintomis bulvytėmis ir šviežiomis salotomis.",
+    price: 8.00,
+
+    sauceCount: 1
+},
+    {
+        id: 17,
+        number: 17,
         name: "Gruzdintos bulvytės",
         category: "chicken",
         image: "images/menu/bulvytes.jpg",
@@ -74,469 +339,25 @@ const products = [
             }
         ]
     },
-{
-    id: 25,
-    category: "snacks",
-    number: "25",
-    name: "Hot Dog",
-    image: "images/menu/hot-dog.jpg",
-    price: 2.50
-},
-
-{
-    id: 26,
-    category: "snacks",
-    number: "26",
-    name: "Prancūziškas dešrainis",
-    image: "images/menu/prancuziskas-desrainis.jpg",
-    price: 2.50
-},
-
-{
-    id: 27,
-    category: "snacks",
-    number: "27",
-    name: "Bagetė",
-    image: "images/menu/bagete.jpg",
-    price: 3.50
-},
     {
-        id: 5,
-        number: 5,
-        name: "Kapsalonas",
-        category: "chicken",
-        image: "images/menu/kapsalonas.jpg",
-        description:
-            "Gruzdintos bulvytės, traški vištiena, padažas, sūris, svogūnai, jalapenai.",
-        price: 9.50
-    },
-
-    {
-        id: 6,
-        number: 6,
-        name: "Traškis Bowl",
-        category: "chicken",
-        image: "images/menu/traskis-bowl.jpg",
-        description:
-            "Traški vištiena, bulvytės, padažas, sūris, svogūnai, jalapenai, skrudintas lavašas.",
-        price: 9.70
-    },
-{
-        id: 7,
-        number: 7,
-        name: "Gruzdinti kaimiški koldūnai 25 vnt.",
-        category: "main",
-        image:
-            "images/menu/gruzdinti-kaimiski-koldunai-25-vnt-su-suriu.jpg",
-        variants: [
-            {
-                name: "Be sūrio",
-                price: 7.00
-            },
-            {
-                name: "Su sūriu",
-                price: 8.00
-            }
-        ]
-    },
-    {
-        id: 8,
-        number: 8,
-        name: "Sparnelių kompleksas",
-        category: "combos",
-        image: "images/menu/sparneliu-kompleksas.jpg",
-        description: "Gruzdintos bulvytės ir gėrimas.",
-        variants: [
-            {
-                name: "Maža porcija 5 vnt.",
-                price: 8.10
-            },
-            {
-                name: "Didelė porcija 6 vnt.",
-                price: 8.90
-            }
-        ],
-        drinkCount: 1
-    },
-
-    {
-        id: 9,
-        number: 9,
-        name: "Traškios vištienos krūtinėlės kompleksas",
-        category: "combos",
-        image: "images/menu/juosteliu-kompleksas.jpg",
-        description: "Gruzdintos bulvytės ir gėrimas.",
-        variants: [
-            {
-                name: "Maža porcija 5 vnt.",
-                price: 8.90
-            },
-            {
-                name: "Didelė porcija 6 vnt.",
-                price: 9.60
-            }
-        ],
-        drinkCount: 1
-    },
-{
-    id: 10,
-    number: 10,
-    category: "combos",
-    number: "10",
-    name: "Traškių vištienos petelių kompleksas",
-    image: "images/menu/peteliai-kompleksas.jpg",
-
-    sauceCount: 1,
-    drinkCount: 1,
-
-    variants: [
-        {
-            name: "Maža porcija (5 vnt.)",
-            price: 8.90
-        },
-        {
-            name: "Didelė porcija (6 vnt.)",
-            price: 9.60
-        }
-    ]
-},{
-    id: 30,
-    category: "snacks",
-    number: "30",
-    name: "Sriubytė su kebabo mėsa",
-    image: "images/menu/sriubyte-su-kebabo-mesa.jpg",
-    price: 4.50
+    id: 18,
+    number: 18,
+    name: "Jalapenai su čederio sūriu",
+    category: "extras",
+    image: "images/menu/jalapenai-su-cederio-suriu.jpg",
+    price: 7.00
 },
-
-{
-    id: 31,
-    category: "snacks",
-    number: "31",
-    name: "Kijevo kotletas su bulvytėmis ir daržovėmis",
-    image: "images/menu/kijevo-kotletas.jpg",
-    price: 8.00,
-
-    sauces: [
-        "Tartarų",
-        "Agurkinis",
-        "Česnakinis",
-        "BBQ"
-    ],
-
-    sauceCount: 1
-},{
-    id: 32,
-    category: "snacks",
-    number: "32",
-    name: "Traškios vištienos sparneliai su bulvytėmis ir daržovėmis",
-    image: "images/menu/traskios-vistienos-sparneliai.jpg",
-    price: 8.50,
-
-    sauces: [
-        "Tartarų",
-        "Agurkinis",
-        "Česnakinis",
-        "BBQ"
-    ],
-
-    sauceCount: 1
-},{
-    id: 33,
-    category: "snacks",
-    number: "33",
-    name: "Grill vištienos sparneliai su bulvytėmis ir daržovėmis",
-    image: "images/menu/grill-vistienos-sparneliai.jpg",
-    price: 8.50,
-
-    sauces: [
-        "Tartarų",
-        "Agurkinis",
-        "Česnakinis",
-        "BBQ"
-    ],
-
-    sauceCount: 1,
-    location: "rygos"
-},{
-    id: 34,
-    category: "snacks",
-    number: "34",
-    name: "Kiaulienos sprandinės šašlykas su bulvytėmis ir daržovėmis",
-    image: "images/menu/kiaulienos-sprandines-saslykas.jpg",
-    price: 10.50,
-
-    sauces: [
-        "Tartarų",
-        "Agurkinis",
-        "Česnakinis",
-        "BBQ"
-    ],
-
-    sauceCount: 1,
-    location: "rygos"
-},{
-    id: 35,
-    category: "snacks",
-    number: "35",
-    name: "Vištienos filė iešmelis su bulvytėmis ir daržovėmis",
-    image: "images/menu/vistienos-file-iesmelis.jpg",
-    price: 10.50,
-
-    sauces: [
-        "Tartarų",
-        "Agurkinis",
-        "Česnakinis",
-        "BBQ"
-    ],
-
-    sauceCount: 1,
-    location: "rygos"
-},
-    
-
-    {
-        id: 11,
-        number: 11,
-        name: "Traškio firminio kebabo kompleksas",
-        category: "combos",
-        image: "images/menu/firminio-kebabo-kompleksas.jpg",
-        description: "Gruzdintos bulvytės ir gėrimas.",
-        price: 9.90,
-        sauceCount: 1,
-        drinkCount: 1
-    },
-
-    {
-        id: 12,
-        number: 12,
-        name: "Kebabo kompleksas",
-        category: "combos",
-        image: "images/menu/kebabo-kompleksas.jpg",
-        description:
-            "Kebabas su vištiena, sūriu ir stiksais + bulvytės + gėrimas.",
-        price: 9.90,
-        sauceCount: 1,
-        drinkCount: 1
-    },
-{
-    id: 28,
-    category: "kebabai",
-    number: "28",
-    name: "Jautienos kebabas",
-    image: "images/menu/jautienos-kebabas.jpg",
-    price: 7.50,
-
-    sauces: [
-        "Tartarų",
-        "Agurkinis",
-        "Česnakinis",
-        "BBQ"
-    ],
-
-    sauceCount: 1
-},
-
-{
-    id: 29,
-    category: "kompleksai",
-    number: "29",
-    name: "Jautienos kebabo kompleksas",
-    image: "images/menu/jautienos-kebabo-kompleksas.jpg",
-    price: 9.90,
-
-    sauces: [
-        "Tartarų",
-        "Agurkinis",
-        "Česnakinis",
-        "BBQ"
-    ],
-
-    drinks: [
-        "Coca-Cola",
-        "Sprite",
-        "Fanta",
-        "Gazuotas vanduo",
-        "Negazuotas vanduo"
-    ],
-
-    sauceCount: 1,
-    drinkCount: 1
-},
-
-{
-    id: 13,
-    number: 13,
-    name: "Burgerio kompleksas su vištienos kebabo mėsa",
-    category: "kompleksai",
-    image: "images/menu/burgerio-kompleksas-su-kebabo-mesa.jpg",
-    description: "Burgeris su vištienos kebabo mėsa, stiksais ir gėrimu.",
-    price: 8.50,
-    drinkCount: 1
-},
-
-
-{
-    id: 14,
-    number: 14,
-    name: "Burgerio kompleksas su traškia vištiena",
-    category: "kompleksai",
-    image: "images/menu/burgerio-kompleksas-su-traskia-vistiena.jpg",
-    description: "Burgeris su traškia vištiena, sūriu, stiksais ir gėrimu.",
-    price: 8.50,
-    drinkCount: 1
-},
-    {
-        id: 15,
-        number: 15,
-        name: "Didelis Traškio firminis kebabas",
-        category: "main",
-        image: "images/menu/firminis-kebabas.jpg",
-        description:
-            "Kebabas su traškia vištiena, sūriu ir bulvių stiksais.",
-        price: 7.50,
-        sauceCount: 1
-    },
-
-    {
-        id: 16,
-        number: 16,
-        name: "Didelis vištienos kebabas",
-        category: "kebabai",
-        image: "images/menu/didelis-vistienos-kebabas.jpg",
-        description:
-            "Didelis vištienos kebabas su sūriu ir stiksais.",
-        price: 7.50,
-        sauceCount: 1
-    },
-
-
-    
-
-    {
-        id: 17,
-        number: 17,
-        name: "Burgeris",
-        category: "burgeriai",
-        image:
-            "images/menu/burgeris-su-vistienos-kebabo-mesa.jpg",
-        variants: [
-            {
-                name: "Burgeris su vištienos kebabo mėsa",
-                price: 4,
-                image:
-                    "images/menu/burgeris-su-vistienos-kebabo-mesa.jpg"
-            },
-            {
-                name: "Burgeris su traškia vištiena ir sūriu",
-                price: 4,
-                image:
-                    "images/menu/burgeris-su-traskia-vistiena-ir-suriu.jpg"
-            }
-        ]
-    },
 {
     id: 19,
     number: 19,
-    name: "Kepti užkandžiai",
+    name: "Mozzarella lazdelės",
     category: "extras",
     image: "images/menu/mozzarella-lazdeles.jpg",
-
-    variants: [
-        {
-            name: "Mozzarella lazdelės",
-            price: 7.00,
-            image: "images/menu/mozzarella-lazdeles.jpg"
-        },
-        {
-            name: "Jalapenai su čederio sūriu",
-            price: 7.00,
-            image: "images/menu/jalapenai-su-cederio-suriu.jpg"
-        }
-    ]
+    price: 7.00
 },
-    {
-        id: 22,
-        number: 22,
-        name: "12 sparnelių rinkinys",
-        category: "sets",
-        image: "images/menu/14-sparneliu.jpg",
-        description:
-            "12 sparnelių, 2 bulvytės + 2 gėrimai + 2 padažai.",
-        price: 16.00,
-        sauceCount: 1,
-        drinkCount: 1
-    },
 {
-        id: 23,
-        number: 23,
-        name: "12 vištienos krūtinėlės juostelių rinkinys",
-        category: "sets",
-        image: "images/menu/14-juosteliu.jpg",
-        description:
-            "12 vištienos krūtinėlės juostelių, 2 bulvytės + 2 gėrimai + 2 padažai.",
-        price: 18.00,
-        sauceCount: 1,
-        drinkCount: 1
-    },
-    {
-        id: 24,
-        number: 24,
-        name: "12 petelių rinkinys",
-        category: "sets",
-        image: "images/menu/18-sparneliu.jpg",
-        description:
-            "12 petelių, 2 bulvytės + 2 gėrimai + 2 padažai.",
-        price: 23.00,
-        sauceCount: 1,
-        drinkCount: 1
-    },
-
-    {
-        id: 25,
-        number: 25,
-        name: "18 vnt. sparnelių rinkinys",
-        category: "sets",
-        image: "images/menu/mazasis-miksas.jpg",
-        description:
-            "18 sparnelių, 3 bulvytės + 3 gėrimai + 3 padažai.",
-        price: 23.00,
-        sauceCount: 1,
-        drinkCount: 1
-    },
-
-    {
-        id: 26,
-        number: 26,
-        name: "18 vištienos krūtinėlės juostelių rinkinys",
-        category: "sets",
-        image: "images/menu/18-juosteliu.jpg",
-        description:
-            "18 vištienos krūtinėlės juostelių, 3 bulvytės + 3 gėrimai + 3 padažai.",
-        price: 25.50,
-        sauceCount: 1,
-        drinkCount: 1
-    },
-
-    
-
-    {
-        id: 27,
-        number: 27,
-        name: "18 vnt. vištienos petelių rinkinys",
-        category: "sets",
-        image: "images/menu/didysis-miksas.jpg",
-        description:
-            "18 vnt. vištienos petelių, 3 bulvytės + 3 gėrimai + 3 padažai.",
-        price: 25.50,
-        sauceCount: 1,
-        drinkCount: 1
-    },
-
-    
-
-    {
-        id: 21,
-        number: 21,
+        id: 20,
+        number: 20,
         name: "Padažas",
         category: "extras",
         image: "images/menu/padazai/tartaru.jpg",
@@ -544,25 +365,24 @@ const products = [
         
             {
                 name: "Agurkinis padažas",
-                price: 0.70,
+                price: 1.00,
                 image: "images/menu/padazai/agurkinis.jpg"
             },
             {
                 name: "Česnakinis padažas",
-                price: 0.70,
+                price: 1.00,
                 image: "images/menu/padazai/cesnakinis.jpg"
             },
             {
                 name: "BBQ padažas",
-                price: 0.70,
+                price: 1.00,
                 image: "images/menu/padazai/bbq.jpg"
             }
         ]
     },
-
-    {
-        id: 20,
-        number: 20,
+{
+        id: 21,
+        number: 21,
         name: "Gėrimas",
         category: "extras",
         image: "images/menu/gerimai/coca-cola-pepsi.jpg",
@@ -600,6 +420,7 @@ const products = [
         ]
     }
 ];
+
 
 window.products = products;
 
