@@ -2,7 +2,7 @@
    VILNIAUS TRAŠKIS – CHECKOUT
 ========================================= */
 
-const RESTAURANT_PHONE = "+37065088000";
+const RESTAURANT_PHONE = "+37066617558";
 const CART_STORAGE_KEY = "traskisCart";
 const DISCOUNT_RATE = 0.20;
 const MIN_PREPARATION_MINUTES = 25;
@@ -443,16 +443,17 @@ function createOrderMessage(
     const discount = calculateDiscount(subtotal);
     const total = subtotal - discount;
 
-    return (
+        return (
         formData.name +
         "\n\n" +
         productsText +
         "\n\n" +
         formatPrice(total) +
         "\n\n" +
-        formData.pickupTime
+        "Atsiėmimas: Rygos g. 43, Vilnius" +
+        "\n" +
+        "Laikas: " + formData.pickupTime
     );
-
 }
 
 
@@ -684,304 +685,141 @@ if (pickupTimeInput) {
 
 /* =========================================
    UŽSAKYMO PATEIKIMAS
+   TIK RYGOS G. 43
 ========================================= */
 
-orderForm?.addEventListener(
-    "submit",
-    event => {
-        event.preventDefault();
+orderForm?.addEventListener("submit", event => {
+    event.preventDefault();
 
-        const cart = getCart();
+    const cart = getCart();
 
-        if (!cart.length) {
-            alert(
-                "Jūsų krepšelis tuščias."
-            );
+    if (!cart.length) {
+        alert("Jūsų krepšelis tuščias.");
+        return;
+    }
 
-            return;
-        }
+    const customerName =
+        customerNameInput?.value.trim() || "";
 
-        const customerName =
-            customerNameInput
-                ?.value
-                .trim() || "";
-
-        const customerPhone =
-            normalizeLithuanianPhone(
-                customerPhoneInput
-                    ?.value
-                    .trim() || ""
-            );
-
-        const pickupType =
-            pickupTypeInput?.value || "";
-
-        const pickupTime =
-            pickupTimeInput?.value || "";
-
-        const customerComment =
-            customerCommentInput
-                ?.value
-                .trim() || "";
-
-        if (!customerName) {
-            customerNameInput?.focus();
-            orderForm.reportValidity();
-
-            return;
-        }
-
-        if (!customerPhone) {
-            customerPhoneInput
-                ?.setCustomValidity(
-                    "Įveskite numerį formatu +3706XXXXXXX arba 86XXXXXXX."
-                );
-
-            customerPhoneInput
-                ?.reportValidity();
-
-            customerPhoneInput?.focus();
-
-            return;
-        }
-
-        customerPhoneInput
-            ?.setCustomValidity("");
-
-        if (!pickupType) {
-            pickupTypeInput?.focus();
-
-            return;
-        }
-
-        if (!pickupTime) {
-            pickupTimeInput?.focus();
-            orderForm.reportValidity();
-
-            return;
-        }
-
-        if (!validatePickupTime()) {
-            return;
-        }
-
-        const orderNumber =
-            generateOrderNumber();
-
-        const formData = {
-            name: customerName,
-            phone: customerPhone,
-            pickupType,
-            pickupTime,
-            comment: customerComment
-        };
-
-        const orderMessage =
-            createOrderMessage(
-                formData,
-                cart,
-                orderNumber
-            );
-
-        const smsLink =
-            createSmsLink(orderMessage);
-
-        if (typeof gtag === "function") {
-            gtag(
-                "event",
-                "begin_checkout",
-                {
-                    currency: "EUR",
-                    value:
-                        calculateTotal(cart),
-
-                    items:
-                        cart.map(item => {
-                            const choices =
-                                getItemChoices(item);
-
-                            return {
-                                item_id:
-                                    item.productId,
-
-                                item_name:
-                                    item.name,
-
-                                item_variant: [
-                                    ...choices.sauces,
-                                    ...choices.drinks
-                                ].join(" / "),
-
-                                price:
-                                    Number(
-                                        item.price
-                                    ) || 0,
-
-                                quantity:
-                                    Number(
-                                        item.quantity
-                                    ) || 1
-                            };
-                        })
-                }
-            );
-        }
-
-      const kioskModal = document.createElement("div");
-
-kioskModal.innerHTML = `
-    <div style="
-        position:fixed;
-        inset:0;
-        background:rgba(0,0,0,.7);
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        z-index:99999;
-    ">
-
-        <div style="
-            background:#1b1b1b;
-            color:#fff;
-            width:90%;
-            max-width:430px;
-            border-radius:15px;
-            padding:30px;
-            text-align:center;
-        ">
-
-            <h2 style="margin-bottom:10px;">
-                Pasirinkite kebabinę
-            </h2>
-
-            <p style="margin-bottom:25px;color:#aaa;">
-                Į kurią kebabinę siunčiate užsakymą?
-            </p>
-
-            <button
-                id="orderJust"
-                type="button"
-                style="
-                    width:100%;
-                    padding:16px;
-                    margin-bottom:15px;
-                    font-size:18px;
-                    cursor:pointer;
-                "
-            >
-                📍 Justiniškės
-                <br>
-                066617557
-            </button>
-
-            <button
-                id="orderRygos"
-                type="button"
-                style="
-                    width:100%;
-                    padding:16px;
-                    margin-bottom:15px;
-                    font-size:18px;
-                    cursor:pointer;
-                "
-            >
-                📍 Rygos
-                <br>
-                066617558
-            </button>
-
-            <button
-                id="closeKioskModal"
-                type="button"
-                style="
-                    margin-top:10px;
-                    background:none;
-                    border:none;
-                    color:#aaa;
-                    cursor:pointer;
-                "
-            >
-                Uždaryti
-            </button>
-
-        </div>
-    </div>
-`;
-
-document.body.appendChild(kioskModal);
-
-function sendOrderToKiosk(phoneNumber) {
-
-    const selectedSmsLink =
-        createSmsLink(
-            orderMessage,
-            phoneNumber
+    const customerPhone =
+        normalizeLithuanianPhone(
+            customerPhoneInput?.value.trim() || ""
         );
 
-    kioskModal.remove();
+    const pickupType =
+        pickupTypeInput?.value || "Atsiimsiu vietoje";
 
+    const pickupTime =
+        pickupTimeInput?.value || "";
+
+    const customerComment =
+        customerCommentInput?.value.trim() || "";
+
+    // Vardo tikrinimas
+    if (!customerName) {
+        customerNameInput?.focus();
+        orderForm.reportValidity();
+        return;
+    }
+
+    // Telefono tikrinimas
+    if (!customerPhone) {
+        customerPhoneInput?.setCustomValidity(
+            "Įveskite numerį formatu +3706XXXXXXX arba 86XXXXXXX."
+        );
+
+        customerPhoneInput?.reportValidity();
+        customerPhoneInput?.focus();
+        return;
+    }
+
+    customerPhoneInput?.setCustomValidity("");
+
+    // Atsiėmimo būdas
+    if (!pickupType) {
+        pickupTypeInput?.focus();
+        return;
+    }
+
+    // Atsiėmimo laikas
+    if (!pickupTime) {
+        pickupTimeInput?.focus();
+        orderForm.reportValidity();
+        return;
+    }
+
+    if (!validatePickupTime()) {
+        return;
+    }
+
+    // Užsakymo numeris
+    const orderNumber = generateOrderNumber();
+
+    const formData = {
+        name: customerName,
+        phone: customerPhone,
+        pickupType,
+        pickupTime,
+        comment: customerComment
+    };
+
+    // Užsakymo SMS tekstas
+    const orderMessage = createOrderMessage(
+        formData,
+        cart,
+        orderNumber
+    );
+
+    // SMS visada siunčiama į Rygos g. 43
+    const smsLink = createSmsLink(
+        orderMessage,
+        "+37066617558"
+    );
+
+    // Google Analytics
+    if (typeof gtag === "function") {
+        gtag("event", "begin_checkout", {
+            currency: "EUR",
+            value: calculateTotal(cart),
+
+            items: cart.map(item => {
+                const choices = getItemChoices(item);
+
+                return {
+                    item_id: item.productId,
+                    item_name: item.name,
+
+                    item_variant: [
+                        ...choices.sauces,
+                        ...choices.drinks
+                    ].join(" / "),
+
+                    price: Number(item.price) || 0,
+                    quantity: Number(item.quantity) || 1
+                };
+            })
+        });
+    }
+
+    // TELEFONAS – atidaro SMS
     if (isMobileDevice()) {
-
         sessionStorage.setItem(
             "traskisPendingSmsOrder",
             "true"
         );
 
-        window.location.href =
-            selectedSmsLink;
+        window.location.href = smsLink;
 
     } else {
 
+        // KOMPIUTERIS – rodo QR kodą
         showQrCode(
-            selectedSmsLink,
+            smsLink,
             orderNumber
         );
-
     }
-}
+});
 
-document
-
-    .getElementById("orderJust")
-    .onclick = () => {
-
-        const rygosOnlyItems =
-            cart.filter(item => {
-                return item.location === "rygos";
-            });
-
-        if (rygosOnlyItems.length > 0) {
-
-            const names = rygosOnlyItems
-                .map(item => `• ${item.name}`)
-                .join("\n");
-
-            alert(
-                "Šių patiekalų galima užsisakyti tik Rygos g. 43:\n\n" +
-                names +
-                "\n\nPasirinkite Rygos g. 43."
-            );
-
-            return;
-        }
-
-        sendOrderToKiosk("066617557");
-    };
-
-document
-    .getElementById("orderRygos")
-    .onclick = () => {
-        sendOrderToKiosk("066617558");
-    };
-
-document
-    .getElementById("closeKioskModal")
-    .onclick = () => {
-        kioskModal.remove();
-    };
-
-    }
-);
 
 /* =========================================
    QR LANGO VALDYMAS
