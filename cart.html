@@ -123,49 +123,37 @@
             <div id="cartItems"></div>
 
 
-            <div class="cart-summary">
+         
+<div class="cart-summary">
 
-                <div class="cart-summary__prices">
+    <div class="cart-summary__prices">
 
-                    <div class="cart-discount-notice">
+        <div class="cart-price-summary">
 
-                        <i class="fa-solid fa-tag"></i>
+            <div class="cart-price-row">
 
-                        <span>
-                            20 % nuolaida pritaikyta automatiškai
-                        </span>
+                <span>
+                    Prekių suma
+                </span>
 
-                    </div>
+                <strong id="cartSubtotal">
+                    0,00 €
+                </strong>
 
+            </div>
 
-                    <div class="cart-price-summary">
+            <!-- Paslėpta nuolaidos eilutė dėl JS suderinamumo -->
+            <div
+                class="cart-price-row cart-price-row--discount"
+                style="display: none;"
+            >
+                <span></span>
 
-                        <div class="cart-price-row">
+                <strong id="cartDiscount">
+                    0,00 €
+                </strong>
+            </div>
 
-                            <span>
-                                Prekių suma
-                            </span>
-
-                            <strong id="cartSubtotal">
-                                0,00 €
-                            </strong>
-
-                        </div>
-
-
-                        <div
-                            class="cart-price-row cart-price-row--discount"
-                        >
-
-                            <span>
-                                Nuolaida internetu −20 %
-                            </span>
-
-                            <strong id="cartDiscount">
-                                −0,00 €
-                            </strong>
-
-                        </div>
 
 
                         <div

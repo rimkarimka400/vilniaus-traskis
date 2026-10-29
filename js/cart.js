@@ -14,7 +14,7 @@ const checkoutButton =
     document.querySelector(".checkout-btn");
 
 const CART_STORAGE_KEY = "traskisCart";
-const DISCOUNT_RATE = 0.20;
+const DISCOUNT_RATE = 0;
 
 
 /* =========================================

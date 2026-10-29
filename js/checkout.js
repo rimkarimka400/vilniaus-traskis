@@ -4,7 +4,7 @@
 
 const RESTAURANT_PHONE = "+37066617558";
 const CART_STORAGE_KEY = "traskisCart";
-const DISCOUNT_RATE = 0.20;
+const DISCOUNT_RATE = 0;
 const MIN_PREPARATION_MINUTES = 25;
 
 const orderForm = document.querySelector("#orderForm");

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="lt">
 
@@ -9,9 +10,9 @@
           content="width=device-width, initial-scale=1.0">
 
     <meta name="description"
-          content="Vilniaus Traškio kontaktai, telefono numeris, adresas ir darbo laikas.">
+          content="Vilniaus Traškis – Rygos g. 43, Vilnius. Kebabai, traški vištiena, burgeriai ir užkandžiai. Telefonas +370 666 17558. Dirbame kasdien 10:00–22:00.">
 
-    <title>Kontaktai | Vilniaus Traškis</title>
+    <title>Kontaktai – Rygos g. 43 | Vilniaus Traškis</title>
 
     <link rel="stylesheet" href="css/style.css">
 
@@ -28,20 +29,27 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
+    <!-- Google Analytics -->
+    <script async
+        src="https://www.googletagmanager.com/gtag/js?id=G-XC0Q2H0T8N">
+    </script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'G-XC0Q2H0T8N');
+    </script>
+
 </head>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XC0Q2H0T8N"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-XC0Q2H0T8N');
-</script>
 
 <body>
 
+<!-- HEADER -->
 <header class="header">
 
     <div class="container">
@@ -53,11 +61,8 @@
         <nav class="navbar">
 
             <a href="index.html">Pradžia</a>
-
             <a href="menu.html">Meniu</a>
-
             <a href="reviews.html">Atsiliepimai</a>
-
             <a href="contact.html">Kontaktai</a>
 
         </nav>
@@ -74,10 +79,11 @@
 
             </a>
 
-            <button type="button"
-                    class="menu-toggle"
-                    aria-label="Atidaryti meniu"
-                    aria-expanded="false">
+            <button
+                type="button"
+                class="menu-toggle"
+                aria-label="Atidaryti meniu"
+                aria-expanded="false">
 
                 <i class="fa-solid fa-bars"></i>
 
@@ -89,6 +95,8 @@
 
 </header>
 
+
+<!-- KONTAKTŲ PUSLAPIS -->
 <main class="contact-page">
 
     <section class="contact-heading">
@@ -103,12 +111,14 @@
 
             <p>
                 Turite klausimų apie užsakymą?
-                Susisiekite telefonu arba užsukite pas mus.
+                Susisiekite telefonu arba užsukite pas mus
+                adresu Rygos g. 43, Vilnius.
             </p>
 
         </div>
 
     </section>
+
 
     <section class="contact-section">
 
@@ -116,6 +126,8 @@
 
             <div class="contact-information">
 
+
+                <!-- TELEFONO NUMERIS -->
                 <div class="contact-card">
 
                     <div class="contact-card-icon">
@@ -128,19 +140,21 @@
 
                         <span>Telefono numeris</span>
 
-                        <a href="tel:+37065088000">
-                            +370 650 88000
+                        <a href="tel:+37066617558">
+                            +370 666 17558
                         </a>
 
                         <p>
-                            Skambinkite dėl užsakymų ir papildomos
-                            informacijos.
+                            Skambinkite dėl užsakymų
+                            ir papildomos informacijos.
                         </p>
 
                     </div>
 
                 </div>
 
+
+                <!-- ADRESAS -->
                 <div class="contact-card">
 
                     <div class="contact-card-icon">
@@ -154,22 +168,25 @@
                         <span>Adresas</span>
 
                         <a
-    href="https://www.google.com/maps/search/?api=1&query=Justini%C5%A1ki%C5%B3+g.+117%2C+Vilnius"
-    target="_blank"
-    rel="noopener noreferrer"
->
-    Justiniškių g. 117, Vilnius
-</a>
+                            href="https://www.google.com/maps/search/?api=1&query=Rygos+g.+43%2C+Vilnius"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Rygos g. 43, Vilnius
+                        </a>
 
-<p>
-    Paspauskite adresą, kad atidarytumėte maršrutą
-    „Google Maps“ programėlėje.
-</p>
+                        <p>
+                            Paspauskite adresą, kad
+                            atidarytumėte vietą
+                            „Google Maps“ programėlėje.
+                        </p>
 
                     </div>
 
                 </div>
 
+
+                <!-- DARBO LAIKAS -->
                 <div class="contact-card">
 
                     <div class="contact-card-icon">
@@ -183,22 +200,25 @@
                         <span>Darbo laikas</span>
 
                         <strong>
-                         Kiekvieną dieną, 24 valandas per parą.
+                            Kiekvieną dieną
                         </strong>
 
                         <p>
-                            24/7
-
+                            10:00–22:00
                         </p>
 
                     </div>
 
                 </div>
 
+
+                <!-- MYGTUKAI -->
                 <div class="contact-actions">
 
-                    <a href="tel:+37065088000"
-                       class="contact-call-btn">
+                    <a
+                        href="tel:+37066617558"
+                        class="contact-call-btn"
+                    >
 
                         <i class="fa-solid fa-phone"></i>
 
@@ -206,8 +226,10 @@
 
                     </a>
 
-                    <a href="menu.html"
-                       class="contact-menu-btn">
+                    <a
+                        href="menu.html"
+                        class="contact-menu-btn"
+                    >
 
                         <i class="fa-solid fa-utensils"></i>
 
@@ -217,21 +239,23 @@
 
                 </div>
 
-             </div>
+            </div>
 
-                  <div class="contact-map-card">
 
-                  <div class="contact-map">
+            <!-- GOOGLE MAPS ŽEMĖLAPIS -->
+            <div class="contact-map-card">
+
+                <div class="contact-map">
 
                     <iframe
-                      src="https://www.google.com/maps?q=Justini%C5%A1ki%C5%B3+g.+117%2C+Vilnius&output=embed"
-                      title="Vilniaus Traškis – Justiniškių g. 117, Vilnius"
+                        src="https://www.google.com/maps?q=Rygos+g.+43%2C+Vilnius&output=embed"
+                        title="Vilniaus Traškis – Rygos g. 43, Vilnius"
                         loading="lazy"
-                          referrerpolicy="no-referrer-when-downgrade"
-                          allowfullscreen
-              ></iframe>
+                        referrerpolicy="no-referrer-when-downgrade"
+                        allowfullscreen
+                    ></iframe>
 
-              </div>
+                </div>
 
             </div>
 
@@ -241,6 +265,8 @@
 
 </main>
 
+
+<!-- FOOTER -->
 <footer class="footer">
 
     <div class="container footer-grid">
@@ -252,12 +278,15 @@
             </a>
 
             <p>
-                Traškūs kebabai, vištiena ir sotūs kompleksai
-                greitam atsiėmimui Vilniuje.
+                Traškūs kebabai, vištiena ir sotūs
+                kompleksai greitam atsiėmimui
+                Vilniuje, Rygos g. 43.
             </p>
 
         </div>
 
+
+        <!-- NUORODOS -->
         <div class="footer-column">
 
             <h3>Nuorodos</h3>
@@ -269,15 +298,17 @@
 
         </div>
 
+
+        <!-- UŽSAKYMAI -->
         <div class="footer-column">
 
             <h3>Užsakymai</h3>
 
-            <a href="tel:+37065088000">
+            <a href="tel:+37066617558">
 
                 <i class="fa-solid fa-phone"></i>
 
-                +370 650 88000
+                +370 666 17558
 
             </a>
 
@@ -293,6 +324,7 @@
 
     </div>
 
+
     <div class="container footer-bottom">
 
         <span>
@@ -305,6 +337,7 @@
     </div>
 
 </footer>
+
 
 <script src="js/script.js"></script>
 
