@@ -85,6 +85,7 @@ const products = [
     image: "images/menu/bagete.jpg",
     price: 3.50
 },
+
 {
     id: 7,
     category: "kebabai",
@@ -92,35 +93,22 @@ const products = [
     name: "Kebabas su traškia vištiena",
     image: "images/menu/kebabas-su-traskia-vistiena.jpg",
 
-    description: "Pasirinkite kebabo dydį arba kompleksą.",
+    description: "Pasirinkite kebabo dydį ir padažą.",
 
     variants: [
         {
             name: "Mažas kebabas",
-            price: 5.50,
-            combo: false
+            price: 5.50
         },
         {
             name: "Didelis kebabas",
-            price: 7.00,
-            combo: false
-        },
-        {
-            name: "Mažas kompleksas",
-            price: 8.50,
-            combo: true
-        },
-        {
-            name: "Didelis kompleksas",
-            price: 9.50,
-            combo: true
+            price: 7.00
         }
     ],
 
-    sauceCount: 1,
-    drinkCount: 1,
-    drinkOnlyForCombo: true
-},{
+    sauceCount: 1
+},
+{
     id: 8,
     category: "kebabai",
     number: "8",
@@ -1385,7 +1373,7 @@ function initializeMobileBottomNavigation() {
             <span>Meniu</span>
         </a>
 
-        <a href="tel:+37065088000">
+        <a href="tel:+37066617558">
             <i class="fa-solid fa-phone"></i>
             <span>Skambinti</span>
         </a>
