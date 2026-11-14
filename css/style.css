@@ -4608,4 +4608,43 @@ body:has(.sms-confirm-modal.active) .mobile-bottom-nav {
     }
 }.location-row {
     display: contents;
+}.delivery-buttons {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0;
+    flex-wrap: wrap;
 }
+
+.wolt-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    padding: 11px 18px;
+    background: #009de0;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: 0.2s ease;
+}
+
+.wolt-button:hover {
+    background: #007bb5;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+    .delivery-buttons {
+        justify-content: center;
+    }
+
+    .wolt-button {
+        width: auto;
+        padding: 10px 15px;
+        font-size: 13px;
+    }
+} 

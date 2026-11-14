@@ -657,11 +657,22 @@ function createProductCard(product) {
                             SAUCES
                         )}
 
-                        ${createChoiceFields(
-                            "drink",
-                            product.drinkCount || 0,
-                            DRINKS
-                        )}
+                        ${product.drinkOnlyForCombo
+    ? `
+        <div class="combo-drink-wrapper" style="display:none;">
+            ${createChoiceFields(
+                "drink",
+                product.drinkCount || 0,
+                DRINKS
+            )}
+        </div>
+    `
+    : createChoiceFields(
+        "drink",
+        product.drinkCount || 0,
+        DRINKS
+    )
+}
 
                     </div>
 
@@ -815,8 +826,14 @@ function getSelectedProduct(
         return null;
     }
 
-    const drinks =
-        getSelectedChoices(
+    const selectedVariant = product.variants?.[
+    Number(card.querySelector(".product-variant")?.value)
+];
+
+const drinks =
+    product.drinkOnlyForCombo && !selectedVariant?.combo
+        ? []
+        : getSelectedChoices(
             card,
             ".product-drink",
             "gėrimą"
@@ -1209,6 +1226,31 @@ document.addEventListener(
                     variant.image ||
                     product.image;
             }
+            if (product.drinkOnlyForCombo) {
+    const drinkBox = card.querySelector(
+        ".combo-drink-wrapper"
+    );
+
+    if (drinkBox) {
+        drinkBox.style.display =
+            variant.combo ? "" : "none";
+
+        const drinkSelects = drinkBox.querySelectorAll(
+            ".product-drink"
+        );
+
+        drinkSelects.forEach(drinkSelect => {
+            drinkSelect.value = "";
+            drinkSelect.classList.remove("input-error");
+        });
+
+        drinkBox.querySelectorAll(
+            ".product-option-error"
+        ).forEach(error => {
+            error.textContent = "";
+        });
+    }
+}
         }
     }
 );
