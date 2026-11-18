@@ -7,24 +7,7 @@ const products = [
     
 
    
-{
-    id: 1,
-    category: "snacks",
-    number: "1",
-    name: "Kiaulienos sprandinės šašlykas su bulvytėmis ir daržovėmis",
-    image: "images/menu/kiaulienos-sprandines-saslykas.jpg",
-    price: 9.00,
 
-    sauces: [
-        "Tartarų",
-        "Agurkinis",
-        "Česnakinis",
-        "BBQ"
-    ],
-
-    sauceCount: 1,
-    location: "rygos"
-},
 {
     id: 2,
     category: "snacks",
@@ -43,24 +26,7 @@ const products = [
     sauceCount: 1,
     location: "rygos"
 },
-{
-    id: 3,
-    category: "snacks",
-    number: "3",
-    name: "Grill vištiena",
-    image: "images/menu/grill-vistiena.jpg",
-    price: 9.00,
 
-    sauces: [
-        "Tartarų",
-        "Agurkinis",
-        "Česnakinis",
-        "BBQ"
-    ],
-
-    sauceCount: 1,
-    location: "rygos"
-},
 {
     id: 4,
     category: "snacks",

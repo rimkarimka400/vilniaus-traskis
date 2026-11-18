@@ -1,0 +1,13 @@
+
+{
+  "id": "/darbuotojai.html",
+  "name": "Vilniaus Traškis – Darbuotojai",
+  "short_name": "Traškis",
+  "description": "Rygos g. 43 užsakymų valdymas",
+  "start_url": "/darbuotojai.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#ff9200",
+  "lang": "lt"
+}

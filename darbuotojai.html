@@ -1,0 +1,572 @@
+
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Darbuotojai | Vilniaus Traškis</title>
+
+  <!-- DARBUOTOJŲ PROGRAMĖLĖS NUSTATYMAI -->
+  <link rel="manifest" href="/darbuotojai-manifest.json">
+  <meta name="theme-color" content="#ff9200">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      background: #1c1c1c;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid #ff8c00;
+    }
+
+    header h1 {
+      margin: 0;
+      color: #ff8c00;
+    }
+
+    header p {
+      margin-bottom: 0;
+      color: #bbb;
+    }
+
+    main {
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 15px;
+    }
+
+    .panel, .order {
+      background: #222;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin: 8px 0 15px;
+      background: #333;
+      color: white;
+      border: 1px solid #555;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      background: #ff8c00;
+      color: #111;
+      border: none;
+      padding: 13px 18px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+    }
+
+    .secondary {
+      background: #444;
+      color: white;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .order {
+      border-left: 4px solid #ff8c00;
+    }
+
+    .order h3 {
+      margin-top: 0;
+      color: #ff8c00;
+    }
+
+    .paid {
+      color: #4ade80;
+      font-weight: bold;
+    }
+
+    .status {
+      color: #ff8c00;
+      font-weight: bold;
+    }
+
+    .muted {
+      color: #bbb;
+    }
+
+    .message {
+      color: #ffb4a8;
+    }
+
+    .total {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>VILNIAUS TRAŠKIS</h1>
+  <p>Darbuotojų sistema | Rygos g. 43</p>
+</header>
+
+<main>
+
+  <!-- PRISIJUNGIMAS -->
+  <section id="loginPanel" class="panel">
+    <h2>Darbuotojo prisijungimas</h2>
+
+    <form id="loginForm">
+      <label for="email">El. paštas</label>
+      <input
+        type="email"
+        id="email"
+        required
+        autocomplete="username"
+      >
+
+      <label for="password">Slaptažodis</label>
+      <input
+        type="password"
+        id="password"
+        required
+        autocomplete="current-password"
+      >
+
+      <button type="submit" id="loginButton">
+        Prisijungti
+      </button>
+    </form>
+
+    <p id="loginMessage" class="message"></p>
+  </section>
+
+  <!-- UŽSAKYMAI -->
+  <section id="ordersPanel" hidden>
+    <h2>Rygos g. užsakymai</h2>
+
+    <p id="employeeEmail" class="muted"></p>
+
+    <div class="actions">
+      <button id="refreshButton">Atnaujinti</button>
+      <button id="logoutButton" class="secondary">
+        Atsijungti
+      </button>
+    </div>
+
+    <p id="ordersMessage" class="muted"></p>
+
+    <div id="ordersList"></div>
+  </section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  // ČIA VĖLIAU ĮRAŠYSIME SUPABASE DUOMENIS
+  const SUPABASE_URL = "https://uzxwackufvrkfhmenhdy.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_3ZLUZ_AAAuvwWJ3Ftr0jkQ_jwausLF0";
+
+  const loginPanel = document.getElementById("loginPanel");
+  const ordersPanel = document.getElementById("ordersPanel");
+  const loginMessage = document.getElementById("loginMessage");
+  const ordersMessage = document.getElementById("ordersMessage");
+  const ordersList = document.getElementById("ordersList");
+
+  let db;
+
+  const money = new Intl.NumberFormat("lt-LT", {
+    style: "currency",
+    currency: "EUR"
+  });
+
+  function showLogin(message = "") {
+    loginPanel.hidden = false;
+    ordersPanel.hidden = true;
+    loginMessage.textContent = message;
+    ordersList.replaceChildren();
+  }
+
+  function showOrders(email) {
+    loginPanel.hidden = true;
+    ordersPanel.hidden = false;
+    document.getElementById("employeeEmail").textContent = email;
+  }
+
+  function formatItem(item) {
+    if (typeof item === "string") {
+      return item;
+    }
+
+    if (!item || typeof item !== "object") {
+      return "Patiekalas";
+    }
+
+    const quantity = item.quantity || item.qty || 1;
+    const name =
+      item.name ||
+      item.title ||
+      item.product_name ||
+      item.product?.name ||
+      "Patiekalas";
+
+    const variant = item.variant?.name || item.variant || "";
+    const variantText =
+      typeof variant === "string" && variant
+        ? " (" + variant + ")"
+        : "";
+
+    return quantity + " × " + name + variantText;
+  }
+
+  function addText(parent, tag, text, className = "") {
+    const element = document.createElement(tag);
+    element.textContent = String(text);
+
+    if (className) {
+      element.className = className;
+    }
+
+    parent.appendChild(element);
+    return element;
+  }
+
+  function renderOrder(order) {
+    const card = document.createElement("article");
+    card.className = "order";
+
+    addText(
+      card,
+      "h3",
+      "Užsakymas #" + (order.order_number || order.id)
+    );
+
+    addText(card, "p", "✓ Apmokėta", "paid");
+
+    addText(
+      card,
+      "p",
+      "Klientas: " + (order.customer_name || "Nenurodyta")
+    );
+
+    addText(
+      card,
+      "p",
+      "Telefonas: " + (order.customer_phone || "Nenurodytas")
+    );
+
+    addText(
+      card,
+      "p",
+      "Atsiėmimas: " + (order.pickup_time || "Nenurodytas")
+    );
+
+    addText(card, "h4", "Patiekalai:");
+
+    const list = document.createElement("ul");
+
+    if (Array.isArray(order.items)) {
+      order.items.forEach(item => {
+        addText(list, "li", formatItem(item));
+      });
+    }
+
+    card.appendChild(list);
+
+    if (order.customer_comment) {
+      addText(
+        card,
+        "p",
+        "Komentaras: " + order.customer_comment
+      );
+    }
+
+    const statuses = {
+      pending_payment: "Laukiama",
+      pending: "Priimtas",
+      paid: "Priimtas",
+      preparing: "Gaminama",
+      ready: "Paruošta",
+      completed: "Atsiimtas"
+    };
+
+    addText(
+      card,
+      "p",
+      "Būsena: " +
+        (statuses[order.order_status] || order.order_status),
+      "status"
+    );
+
+    addText(
+      card,
+      "p",
+      "Suma: " + money.format(Number(order.total_amount) || 0),
+      "total"
+    );
+
+    // Darbuotojo užsakymo valdymo mygtukai
+    if (
+      order.order_status !== "ready" &&
+      order.order_status !== "completed"
+    ) {
+      const nextStatus =
+        order.order_status === "preparing"
+          ? "ready"
+          : "preparing";
+
+      const button = document.createElement("button");
+      button.type = "button";
+
+      button.textContent =
+        nextStatus === "preparing"
+          ? "Gaminama"
+          : "Paruošta";
+
+      button.addEventListener("click", () => {
+        updateOrderStatus(order, nextStatus, button);
+      });
+
+      card.appendChild(button);
+    }
+
+    return card;
+  }
+
+async function updateOrderStatus(order, newStatus, button) {
+  button.disabled = true;
+
+  try {
+    const { data, error } = await db
+      .from("orders")
+      .update({ order_status: newStatus })
+      .eq("id", order.id)
+      .eq("pickup_location", "rygos")
+      .eq("payment_status", "paid")
+      .eq("order_status", order.order_status)
+      .select("id, order_status")
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (!data) {
+      throw new Error("Užsakymas pasikeitė arba nėra prieigos.");
+    }
+
+    await loadOrders();
+
+  } catch (error) {
+    console.error(error);
+    alert("Nepavyko pakeisti būsenos. Bandykite dar kartą.");
+    button.disabled = false;
+  }
+}
+
+  async function loadOrders() {
+    if (ordersPanel.hidden) return;
+
+    const refreshButton =
+      document.getElementById("refreshButton");
+
+    refreshButton.disabled = true;
+    ordersMessage.textContent = "Kraunami užsakymai...";
+
+    try {
+      const { data, error } = await db
+        .from("orders")
+        .select("*")
+        .eq("pickup_location", "rygos")
+        .eq("payment_status", "paid")
+        .order("created_at", { ascending: false })
+        .limit(100);
+
+      if (error) throw error;
+
+      ordersList.replaceChildren();
+
+      if (!data || data.length === 0) {
+        ordersMessage.textContent =
+          "Kol kas nėra apmokėtų užsakymų.";
+        return;
+      }
+
+      ordersMessage.textContent =
+        "Apmokėtų užsakymų: " + data.length;
+
+      data.forEach(order => {
+        ordersList.appendChild(renderOrder(order));
+      });
+
+    } catch (error) {
+      console.error(error);
+      ordersMessage.textContent =
+        "Nepavyko įkelti užsakymų.";
+    } finally {
+      refreshButton.disabled = false;
+    }
+  }
+
+  async function checkUser() {
+    const { data: { user }, error } = await db.auth.getUser();
+
+    if (error || !user) {
+      showLogin();
+      return;
+    }
+
+    const { data: staff, error: staffError } = await db
+      .from("staff_members")
+      .select("location")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (staffError) {
+      throw staffError;
+    }
+
+    if (!staff || staff.location !== "rygos") {
+      await db.auth.signOut();
+      showLogin("Ši paskyra neturi darbuotojo teisių.");
+      return;
+    }
+
+    showOrders(user.email || "Darbuotojas");
+    await loadOrders();
+  }
+
+  document.getElementById("loginForm")
+    .addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const button = document.getElementById("loginButton");
+      button.disabled = true;
+      loginMessage.textContent = "Jungiamasi...";
+
+      try {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        const { error } = await db.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (error) throw error;
+
+        document.getElementById("password").value = "";
+        await checkUser();
+
+      } catch (error) {
+        console.error(error);
+        loginMessage.textContent =
+          "Nepavyko prisijungti. Patikrinkite duomenis.";
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+  document.getElementById("refreshButton")
+    .addEventListener("click", loadOrders);
+
+  document.getElementById("logoutButton")
+    .addEventListener("click", async () => {
+      await db.auth.signOut();
+      showLogin("Atsijungta.");
+    });
+
+  async function start() {
+    if (
+      SUPABASE_URL.startsWith("CIA_IRASYK") ||
+      SUPABASE_KEY.startsWith("CIA_IRASYK")
+    ) {
+      showLogin("Dar reikia įrašyti Supabase URL ir viešą raktą.");
+      document.getElementById("loginButton").disabled = true;
+      return;
+    }
+
+    db = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+    try {
+      await checkUser();
+    } catch (error) {
+      console.error(error);
+      showLogin("Nepavyko patikrinti darbuotojo paskyros.");
+    }
+  }
+
+  setInterval(() => {
+    if (db && !ordersPanel.hidden) {
+      loadOrders();
+    }
+  }, 20000);
+
+
+  start();
+
+  // DARBUOTOJŲ PUSH PRANEŠIMŲ PARUOŠIMAS
+  if ("serviceWorker" in navigator && window.isSecureContext) {
+
+    window.addEventListener("load", async () => {
+      try {
+
+        const registration =
+          await navigator.serviceWorker.register(
+            "/darbuotojai-sw.js"
+          );
+
+        console.log(
+          "Pranešimų tarnyba užregistruota:",
+          registration.scope
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Nepavyko užregistruoti pranešimų tarnybos:",
+          error
+        );
+
+      }
+    });
+
+  } else {
+
+    console.warn(
+      "Ši naršyklė nepalaiko Service Worker arba nėra HTTPS."
+    );
+
+  }
+</script>
+
+</body>
+</html>
+
