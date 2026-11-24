@@ -9,31 +9,12 @@ const products = [
    
 
 {
-    id: 2,
-    category: "snacks",
-    number: "2",
-    name: "Vištienos filė iešmelis su bulvytėmis ir daržovėmis",
-    image: "images/menu/vistienos-file-iesmelis.jpg",
-    price: 9.00,
-
-    sauces: [
-        "Tartarų",
-        "Agurkinis",
-        "Česnakinis",
-        "BBQ"
-    ],
-
-    sauceCount: 1,
-    location: "rygos"
-},
-
-{
     id: 4,
     category: "snacks",
     number: "4",
     name: "Hot Dog",
     image: "images/menu/hot-dog.jpg",
-    price: 2.50
+    price: 3
 },
 {
     id: 5,
@@ -41,7 +22,7 @@ const products = [
     number: "5",
     name: "Prancūziškas dešrainis",
     image: "images/menu/prancuziskas-desrainis.jpg",
-    price: 2.50
+    price: 3
 }, 
 {
     id: 6,
@@ -49,7 +30,7 @@ const products = [
     number: "6",
     name: "Bagetė",
     image: "images/menu/bagete.jpg",
-    price: 3.50
+    price: 4
 },
 
 {
@@ -64,11 +45,11 @@ const products = [
     variants: [
         {
             name: "Mažas kebabas",
-            price: 5.50
+            price: 6
         },
         {
             name: "Didelis kebabas",
-            price: 7.00
+            price: 7.50
         }
     ],
 
@@ -86,22 +67,22 @@ const products = [
     variants: [
         {
             name: "Mažas kebabas",
-            price: 5.50,
+            price: 6,
             combo: false
         },
         {
             name: "Didelis kebabas",
-            price: 7.00,
+            price: 7.50,
             combo: false
         },
         {
             name: "Mažas kompleksas",
-            price: 8.50,
+            price: 9,
             combo: true
         },
         {
             name: "Didelis kompleksas",
-            price: 9.50,
+            price: 10,
             combo: true
         }
     ],
@@ -122,22 +103,22 @@ const products = [
     variants: [
         {
             name: "Mažas kebabas",
-            price: 5.50,
+            price: 6,
             combo: false
         },
         {
             name: "Didelis kebabas",
-            price: 7.00,
+            price: 7.50,
             combo: false
         },
         {
             name: "Mažas kompleksas",
-            price: 8.50,
+            price: 9,
             combo: true
         },
         {
             name: "Didelis kompleksas",
-            price: 9.50,
+            price: 10,
             combo: true
         }
     ],
@@ -158,11 +139,11 @@ const products = [
     variants: [
         {
             name: "Su jautiena",
-            price: 8.00
+            price: 8.50
         },
         {
             name: "Su vištiena",
-            price: 8.00
+            price: 8.50
         }
     ]
 },
@@ -174,7 +155,7 @@ const products = [
         image: "images/menu/kapsalonas.jpg",
         description:
             "Gruzdintos bulvytės, traški vištiena, padažas, sūris, svogūnai, jalapenai.",
-        price: 8.50
+        price: 9
     },
     {
     id: 12,
@@ -188,12 +169,12 @@ const products = [
     variants: [
         {
             name: "Burgeris",
-            price: 4.50,
+            price: 5,
             combo: false
         },
         {
             name: "Burgerio kompleksas",
-            price: 7.50,
+            price: 8,
             combo: true,
             image: "images/menu/burgerio-kompleksas-su-traskia-vistiena.jpg"
         }
@@ -214,19 +195,19 @@ const products = [
     variants: [
         {
             name: "Maža porcija 15 vnt. – be sūrio",
-            price: 5.00
+            price: 5.50
         },
         {
             name: "Maža porcija 15 vnt. – su sūriu",
-            price: 6.00
+            price: 6.60
         },
         {
             name: "Didelė porcija 25 vnt. – be sūrio",
-            price: 7.00
+            price: 7.50
         },
         {
             name: "Didelė porcija 25 vnt. – su sūriu",
-            price: 8.00
+            price: 8.50
         }
     ]
 },
@@ -240,11 +221,11 @@ const products = [
     variants: [
         {
             name: "Su vištiena",
-            price: 3.00
+            price: 3.50
         },
         {
             name: "Su jautiena",
-            price: 3.00
+            price: 3.50
         }
     ]
 },
@@ -254,7 +235,7 @@ const products = [
     number: "15",
     name: "Kijevo kotletas su bulvytėmis ir daržovėmis",
     image: "images/menu/kijevo-kotletas.jpg",
-    price: 8.00,
+    price: 8.50,
 
     sauces: [
         "Tartarų",
@@ -272,7 +253,7 @@ const products = [
     name: "Traški vištiena su bulvytėmis ir salotomis",
     image: "images/menu/traski-vistiena-su-bulvytemis-ir-salotomis.jpg",
     description: "Traški vištiena su gruzdintomis bulvytėmis ir šviežiomis salotomis.",
-    price: 8.00,
+    price: 8.50,
 
     sauceCount: 1
 },
@@ -285,11 +266,11 @@ const products = [
         variants: [
             {
                 name: "Bulvytės",
-                price: 3.70
+                price: 3.00
             },
             {
                 name: "Bulvytės + sūris",
-                price: 4.70
+                price: 4.00
             }
         ]
     },
@@ -299,7 +280,7 @@ const products = [
     name: "Jalapenai su čederio sūriu",
     category: "extras",
     image: "images/menu/jalapenai-su-cederio-suriu.jpg",
-    price: 7.00
+    price: 7.50
 },
 {
     id: 19,
@@ -307,7 +288,7 @@ const products = [
     name: "Mozzarella lazdelės",
     category: "extras",
     image: "images/menu/mozzarella-lazdeles.jpg",
-    price: 7.00
+    price: 7.50
 },
 {
         id: 20,
@@ -319,17 +300,17 @@ const products = [
         
             {
                 name: "Agurkinis padažas",
-                price: 1.00,
+                price: 1.50,
                 image: "images/menu/padazai/agurkinis.jpg"
             },
             {
                 name: "Česnakinis padažas",
-                price: 1.00,
+                price: 1.50,
                 image: "images/menu/padazai/cesnakinis.jpg"
             },
             {
                 name: "BBQ padažas",
-                price: 1.00,
+                price: 1.50,
                 image: "images/menu/padazai/bbq.jpg"
             }
         ]
@@ -343,31 +324,31 @@ const products = [
         variants: [
             {
                 name: "Coca-Cola / Pepsi",
-                price: 2.00,
+                price: 2.50,
                 image:
                     "images/menu/gerimai/coca-cola-pepsi.jpg"
             },
             {
                 name: "Sprite / 7UP",
-                price: 2.00,
+                price: 2.50,
                 image:
                     "images/menu/gerimai/sprite-7up.jpg"
             },
             {
                 name: "Fanta / Mirinda",
-                price: 2.00,
+                price: 2.50,
                 image:
                     "images/menu/gerimai/fanta-mirinda.jpg"
             },
             {
                 name: "Gazuotas vanduo",
-                price: 2.00,
+                price: 2.50,
                 image:
                     "images/menu/gerimai/gazuotas-vanduo.jpg"
             },
             {
                 name: "Negazuotas vanduo",
-                price: 2.00,
+                price: 2.50,
                 image:
                     "images/menu/gerimai/negazuotas-vanduo.jpg"
             }

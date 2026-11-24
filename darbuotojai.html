@@ -7,7 +7,6 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Darbuotojai | Vilniaus Traškis</title>
 
-  <!-- DARBUOTOJŲ PROGRAMĖLĖS NUSTATYMAI -->
   <link rel="manifest" href="/darbuotojai-manifest.json">
   <meta name="theme-color" content="#ff9200">
 
@@ -77,6 +76,7 @@
 
     button:disabled {
       opacity: 0.5;
+      cursor: not-allowed;
     }
 
     .secondary {
@@ -86,6 +86,7 @@
 
     .actions {
       display: flex;
+      flex-wrap: wrap;
       gap: 10px;
       margin-bottom: 20px;
     }
@@ -97,6 +98,7 @@
     .order h3 {
       margin-top: 0;
       color: #ff8c00;
+      overflow-wrap: anywhere;
     }
 
     .paid {
@@ -122,6 +124,35 @@
       font-weight: bold;
     }
 
+    .notification-panel {
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+
+    .notification-panel h3 {
+      color: #ff8c00;
+      margin-top: 0;
+    }
+
+    .notification-panel p {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .notification-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    #notificationStatus {
+      margin-bottom: 0;
+      color: #bbb;
+    }
+
     [hidden] {
       display: none !important;
     }
@@ -138,11 +169,14 @@
 <main>
 
   <!-- PRISIJUNGIMAS -->
+
   <section id="loginPanel" class="panel">
     <h2>Darbuotojo prisijungimas</h2>
 
     <form id="loginForm">
+
       <label for="email">El. paštas</label>
+
       <input
         type="email"
         id="email"
@@ -151,6 +185,7 @@
       >
 
       <label for="password">Slaptažodis</label>
+
       <input
         type="password"
         id="password"
@@ -161,27 +196,70 @@
       <button type="submit" id="loginButton">
         Prisijungti
       </button>
+
     </form>
 
     <p id="loginMessage" class="message"></p>
+
   </section>
 
   <!-- UŽSAKYMAI -->
+
   <section id="ordersPanel" hidden>
+
     <h2>Rygos g. užsakymai</h2>
 
     <p id="employeeEmail" class="muted"></p>
 
     <div class="actions">
-      <button id="refreshButton">Atnaujinti</button>
+
+      <button id="refreshButton">
+        Atnaujinti
+      </button>
+
       <button id="logoutButton" class="secondary">
         Atsijungti
       </button>
+
+    </div>
+
+    <!-- PUSH PRANEŠIMAI -->
+
+    <div class="notification-panel">
+
+      <h3>🔔 Užsakymų pranešimai</h3>
+
+      <p class="muted">
+        Įjunkite pranešimus, kad gautumėte informaciją
+        apie naujus apmokėtus užsakymus net uždarę puslapį.
+      </p>
+
+      <div class="notification-buttons">
+
+        <button id="enableNotifications">
+          🔔 Įjungti pranešimus
+        </button>
+
+        <button
+          id="disableNotifications"
+          class="secondary"
+          hidden
+        >
+          Išjungti pranešimus
+        </button>
+
+      </div>
+
+      <p id="notificationStatus">
+        Tikrinama pranešimų būsena...
+      </p>
+
     </div>
 
     <p id="ordersMessage" class="muted"></p>
 
     <div id="ordersList"></div>
+
   </section>
 
 </main>
@@ -189,17 +267,47 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-  // ČIA VĖLIAU ĮRAŠYSIME SUPABASE DUOMENIS
-  const SUPABASE_URL = "https://uzxwackufvrkfhmenhdy.supabase.co";
-  const SUPABASE_KEY = "sb_publishable_3ZLUZ_AAAuvwWJ3Ftr0jkQ_jwausLF0";
 
-  const loginPanel = document.getElementById("loginPanel");
-  const ordersPanel = document.getElementById("ordersPanel");
-  const loginMessage = document.getElementById("loginMessage");
-  const ordersMessage = document.getElementById("ordersMessage");
-  const ordersList = document.getElementById("ordersList");
+  // SUPABASE NUSTATYMAI
+
+  const SUPABASE_URL =
+    "https://uzxwackufvrkfhmenhdy.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_3ZLUZ_AAAuvwWJ3Ftr0jkQ_jwausLF0";
+
+  // ČIA ĮRAŠYK SAVO VIEŠĄJĮ VAPID RAKTĄ
+
+  const VAPID_PUBLIC_KEY =
+    "BNnI0TfH4ypJGOaN-DZeo_KYxJ7yCJvqPImGQLTVBmE85xEOzgZihEanvdrsXQSg9UIc5S6zSs0NbX79oPE74UQ";
+
+  const loginPanel =
+    document.getElementById("loginPanel");
+
+  const ordersPanel =
+    document.getElementById("ordersPanel");
+
+  const loginMessage =
+    document.getElementById("loginMessage");
+
+  const ordersMessage =
+    document.getElementById("ordersMessage");
+
+  const ordersList =
+    document.getElementById("ordersList");
+
+  const enableNotificationsButton =
+    document.getElementById("enableNotifications");
+
+  const disableNotificationsButton =
+    document.getElementById("disableNotifications");
+
+  const notificationStatus =
+    document.getElementById("notificationStatus");
 
   let db;
+  let currentUser = null;
+  let registrationPromise = null;
 
   const money = new Intl.NumberFormat("lt-LT", {
     style: "currency",
@@ -207,19 +315,349 @@
   });
 
   function showLogin(message = "") {
+
+    currentUser = null;
+
     loginPanel.hidden = false;
     ordersPanel.hidden = true;
     loginMessage.textContent = message;
+
     ordersList.replaceChildren();
   }
 
   function showOrders(email) {
+
     loginPanel.hidden = true;
     ordersPanel.hidden = false;
-    document.getElementById("employeeEmail").textContent = email;
+
+    document.getElementById("employeeEmail")
+      .textContent = email;
   }
 
+  // ========================================
+  // PUSH PRANEŠIMŲ SISTEMA
+  // ========================================
+
+  function pushSupported() {
+
+    return (
+      window.isSecureContext &&
+      "serviceWorker" in navigator &&
+      "PushManager" in window &&
+      "Notification" in window
+    );
+  }
+
+  function setNotificationStatus(message, success = false) {
+
+    notificationStatus.textContent = message;
+
+    notificationStatus.style.color =
+      success ? "#4ade80" : "#bbb";
+  }
+
+  function urlBase64ToUint8Array(base64String) {
+
+    const padding = "=".repeat(
+      (4 - base64String.length % 4) % 4
+    );
+
+    const base64 = (base64String + padding)
+      .replace(/-/g, "+")
+      .replace(/_/g, "/");
+
+    const rawData = window.atob(base64);
+
+    return Uint8Array.from(
+      rawData,
+      character => character.charCodeAt(0)
+    );
+  }
+
+  async function getServiceWorker() {
+
+    if (!pushSupported()) {
+      throw new Error(
+        "Ši naršyklė nepalaiko PUSH pranešimų."
+      );
+    }
+
+    if (!registrationPromise) {
+
+      registrationPromise = navigator.serviceWorker
+        .register("/darbuotojai-sw.js")
+        .then(() => navigator.serviceWorker.ready)
+        .catch(error => {
+          registrationPromise = null;
+          throw error;
+        });
+    }
+
+    return registrationPromise;
+  }
+
+  async function updateNotificationStatus() {
+
+    enableNotificationsButton.hidden = false;
+    enableNotificationsButton.disabled = false;
+    disableNotificationsButton.hidden = true;
+
+    if (!pushSupported()) {
+
+      setNotificationStatus(
+        "Šis įrenginys arba naršyklė nepalaiko PUSH pranešimų."
+      );
+
+      enableNotificationsButton.disabled = true;
+
+      return;
+    }
+
+    if (Notification.permission === "denied") {
+
+      setNotificationStatus(
+        "Pranešimai užblokuoti. Leiskite juos naršyklės nustatymuose."
+      );
+
+      enableNotificationsButton.disabled = true;
+
+      return;
+    }
+
+    try {
+
+      const registration = await getServiceWorker();
+
+      const subscription =
+        await registration.pushManager.getSubscription();
+
+      if (
+        subscription &&
+        Notification.permission === "granted" &&
+        currentUser
+      ) {
+
+        const { data, error } = await db
+          .from("push_subscriptions")
+          .select("id")
+          .eq("user_id", currentUser.id)
+          .eq("endpoint", subscription.endpoint)
+          .maybeSingle();
+
+        if (error) throw error;
+
+        if (data) {
+
+          setNotificationStatus(
+            "✓ Pranešimai įjungti šiame įrenginyje.",
+            true
+          );
+
+          enableNotificationsButton.hidden = true;
+          disableNotificationsButton.hidden = false;
+
+          return;
+        }
+      }
+
+      setNotificationStatus(
+        "Pranešimai šiame įrenginyje neįjungti."
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      setNotificationStatus(
+        "Nepavyko patikrinti pranešimų būsenos."
+      );
+    }
+  }
+
+  async function enablePushNotifications() {
+
+    if (!currentUser) return;
+
+    if (!pushSupported()) {
+
+      alert(
+        "Ši naršyklė nepalaiko PUSH pranešimų."
+      );
+
+      return;
+    }
+
+    if (
+      !VAPID_PUBLIC_KEY ||
+      VAPID_PUBLIC_KEY.startsWith("CIA_IRASYK")
+    ) {
+
+      alert(
+        "Dar neįrašytas viešasis VAPID raktas."
+      );
+
+      return;
+    }
+
+    enableNotificationsButton.disabled = true;
+    document.getElementById("logoutButton").disabled = true;
+
+    try {
+
+      const permission =
+        await Notification.requestPermission();
+
+      if (permission !== "granted") {
+
+        setNotificationStatus(
+          "Negautas leidimas rodyti pranešimus."
+        );
+
+        return;
+      }
+
+      const registration = await getServiceWorker();
+
+      let subscription =
+        await registration.pushManager.getSubscription();
+
+      if (!subscription) {
+
+        subscription =
+          await registration.pushManager.subscribe({
+
+            userVisibleOnly: true,
+
+            applicationServerKey:
+              urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+
+          });
+      }
+
+      const subscriptionData = subscription.toJSON();
+
+      if (
+        !subscriptionData.endpoint ||
+        !subscriptionData.keys?.p256dh ||
+        !subscriptionData.keys?.auth
+      ) {
+        throw new Error("Nepilni prenumeratos duomenys.");
+      }
+
+      const { error } = await db
+        .from("push_subscriptions")
+        .upsert({
+
+          user_id: currentUser.id,
+
+          endpoint: subscriptionData.endpoint,
+
+          p256dh: subscriptionData.keys.p256dh,
+
+          auth: subscriptionData.keys.auth
+
+        }, {
+          onConflict: "endpoint"
+        });
+
+      if (error) throw error;
+
+      setNotificationStatus(
+        "✓ Pranešimai sėkmingai įjungti!",
+        true
+      );
+
+      enableNotificationsButton.hidden = true;
+      disableNotificationsButton.hidden = false;
+
+    } catch (error) {
+
+      console.error(
+        "Pranešimų įjungimo klaida:",
+        error
+      );
+
+      setNotificationStatus(
+        "Nepavyko įjungti pranešimų: " +
+        (error.message || "Nežinoma klaida")
+      );
+
+    } finally {
+
+      enableNotificationsButton.disabled = false;
+      document.getElementById("logoutButton").disabled = false;
+
+    }
+  }
+
+  async function removePushSubscription() {
+
+    if (!pushSupported() || !currentUser) return;
+
+    const registration = await getServiceWorker();
+
+    const subscription =
+      await registration.pushManager.getSubscription();
+
+    if (!subscription) return;
+
+    const { error } = await db
+      .from("push_subscriptions")
+      .delete()
+      .eq("user_id", currentUser.id)
+      .eq("endpoint", subscription.endpoint);
+
+    if (error) throw error;
+
+    await subscription.unsubscribe();
+  }
+
+  async function disablePushNotifications() {
+
+    disableNotificationsButton.disabled = true;
+
+    try {
+
+      await removePushSubscription();
+
+      enableNotificationsButton.hidden = false;
+      disableNotificationsButton.hidden = true;
+
+      setNotificationStatus(
+        "Pranešimai išjungti."
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      setNotificationStatus(
+        "Nepavyko išjungti pranešimų."
+      );
+
+    } finally {
+
+      disableNotificationsButton.disabled = false;
+
+    }
+  }
+
+  enableNotificationsButton.addEventListener(
+    "click",
+    enablePushNotifications
+  );
+
+  disableNotificationsButton.addEventListener(
+    "click",
+    disablePushNotifications
+  );
+
+  // ========================================
+  // UŽSAKYMŲ ATVAIZDAVIMAS
+  // ========================================
+
   function formatItem(item) {
+
     if (typeof item === "string") {
       return item;
     }
@@ -228,7 +666,9 @@
       return "Patiekalas";
     }
 
-    const quantity = item.quantity || item.qty || 1;
+    const quantity =
+      item.quantity || item.qty || 1;
+
     const name =
       item.name ||
       item.title ||
@@ -236,7 +676,9 @@
       item.product?.name ||
       "Patiekalas";
 
-    const variant = item.variant?.name || item.variant || "";
+    const variant =
+      item.variant?.name || item.variant || "";
+
     const variantText =
       typeof variant === "string" && variant
         ? " (" + variant + ")"
@@ -246,7 +688,9 @@
   }
 
   function addText(parent, tag, text, className = "") {
+
     const element = document.createElement(tag);
+
     element.textContent = String(text);
 
     if (className) {
@@ -254,11 +698,14 @@
     }
 
     parent.appendChild(element);
+
     return element;
   }
 
   function renderOrder(order) {
+
     const card = document.createElement("article");
+
     card.className = "order";
 
     addText(
@@ -267,24 +714,32 @@
       "Užsakymas #" + (order.order_number || order.id)
     );
 
-    addText(card, "p", "✓ Apmokėta", "paid");
-
     addText(
       card,
       "p",
-      "Klientas: " + (order.customer_name || "Nenurodyta")
+      "✓ Apmokėta",
+      "paid"
     );
 
     addText(
       card,
       "p",
-      "Telefonas: " + (order.customer_phone || "Nenurodytas")
+      "Klientas: " +
+      (order.customer_name || "Nenurodyta")
     );
 
     addText(
       card,
       "p",
-      "Atsiėmimas: " + (order.pickup_time || "Nenurodytas")
+      "Telefonas: " +
+      (order.customer_phone || "Nenurodytas")
+    );
+
+    addText(
+      card,
+      "p",
+      "Atsiėmimas: " +
+      (order.pickup_time || "Nenurodytas")
     );
 
     addText(card, "h4", "Patiekalai:");
@@ -292,56 +747,69 @@
     const list = document.createElement("ul");
 
     if (Array.isArray(order.items)) {
+
       order.items.forEach(item => {
-        addText(list, "li", formatItem(item));
+
+        addText(
+          list,
+          "li",
+          formatItem(item)
+        );
+
       });
     }
 
     card.appendChild(list);
 
     if (order.customer_comment) {
+
       addText(
         card,
         "p",
         "Komentaras: " + order.customer_comment
       );
+
     }
 
     const statuses = {
+
       pending_payment: "Laukiama",
       pending: "Priimtas",
       paid: "Priimtas",
       preparing: "Gaminama",
       ready: "Paruošta",
       completed: "Atsiimtas"
+
     };
 
     addText(
       card,
       "p",
       "Būsena: " +
-        (statuses[order.order_status] || order.order_status),
+      (statuses[order.order_status] || order.order_status),
       "status"
     );
 
     addText(
       card,
       "p",
-      "Suma: " + money.format(Number(order.total_amount) || 0),
+      "Suma: " +
+      money.format(Number(order.total_amount) || 0),
       "total"
     );
 
-    // Darbuotojo užsakymo valdymo mygtukai
     if (
       order.order_status !== "ready" &&
       order.order_status !== "completed"
     ) {
+
       const nextStatus =
         order.order_status === "preparing"
           ? "ready"
           : "preparing";
 
       const button = document.createElement("button");
+
       button.type = "button";
 
       button.textContent =
@@ -350,7 +818,13 @@
           : "Paruošta";
 
       button.addEventListener("click", () => {
-        updateOrderStatus(order, nextStatus, button);
+
+        updateOrderStatus(
+          order,
+          nextStatus,
+          button
+        );
+
       });
 
       card.appendChild(button);
@@ -359,60 +833,97 @@
     return card;
   }
 
-async function updateOrderStatus(order, newStatus, button) {
-  button.disabled = true;
+  // ========================================
+  // UŽSAKYMO BŪSENOS KEITIMAS
+  // ========================================
 
-  try {
-    const { data, error } = await db
-      .from("orders")
-      .update({ order_status: newStatus })
-      .eq("id", order.id)
-      .eq("pickup_location", "rygos")
-      .eq("payment_status", "paid")
-      .eq("order_status", order.order_status)
-      .select("id, order_status")
-      .maybeSingle();
+  async function updateOrderStatus(
+    order,
+    newStatus,
+    button
+  ) {
 
-    if (error) throw error;
+    button.disabled = true;
 
-    if (!data) {
-      throw new Error("Užsakymas pasikeitė arba nėra prieigos.");
+    try {
+
+      const { data, error } = await db
+        .from("orders")
+        .update({
+          order_status: newStatus
+        })
+        .eq("id", order.id)
+        .eq("pickup_location", "rygos")
+        .eq("payment_status", "paid")
+        .eq("order_status", order.order_status)
+        .select("id, order_status")
+        .maybeSingle();
+
+      if (error) throw error;
+
+      if (!data) {
+
+        throw new Error(
+          "Užsakymas pasikeitė arba nėra prieigos."
+        );
+
+      }
+
+      await loadOrders();
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "Nepavyko pakeisti būsenos. Bandykite dar kartą."
+      );
+
+      button.disabled = false;
     }
-
-    await loadOrders();
-
-  } catch (error) {
-    console.error(error);
-    alert("Nepavyko pakeisti būsenos. Bandykite dar kartą.");
-    button.disabled = false;
   }
-}
+
+  // ========================================
+  // UŽSAKYMŲ ĮKĖLIMAS
+  // ========================================
 
   async function loadOrders() {
+
     if (ordersPanel.hidden) return;
 
     const refreshButton =
       document.getElementById("refreshButton");
 
+    if (refreshButton.disabled) return;
+
     refreshButton.disabled = true;
-    ordersMessage.textContent = "Kraunami užsakymai...";
+
+    ordersMessage.textContent =
+      "Kraunami užsakymai...";
 
     try {
+
       const { data, error } = await db
         .from("orders")
         .select("*")
         .eq("pickup_location", "rygos")
         .eq("payment_status", "paid")
-        .order("created_at", { ascending: false })
+        .order("created_at", {
+          ascending: false
+        })
         .limit(100);
 
       if (error) throw error;
 
+      if (ordersPanel.hidden) return;
+
       ordersList.replaceChildren();
 
       if (!data || data.length === 0) {
+
         ordersMessage.textContent =
           "Kol kas nėra apmokėtų užsakymų.";
+
         return;
       }
 
@@ -420,27 +931,49 @@ async function updateOrderStatus(order, newStatus, button) {
         "Apmokėtų užsakymų: " + data.length;
 
       data.forEach(order => {
-        ordersList.appendChild(renderOrder(order));
+
+        ordersList.appendChild(
+          renderOrder(order)
+        );
+
       });
 
     } catch (error) {
+
       console.error(error);
+
       ordersMessage.textContent =
         "Nepavyko įkelti užsakymų.";
+
     } finally {
+
       refreshButton.disabled = false;
+
     }
   }
 
+  // ========================================
+  // DARBUOTOJO PATIKRINIMAS
+  // ========================================
+
   async function checkUser() {
-    const { data: { user }, error } = await db.auth.getUser();
+
+    const {
+      data: { user },
+      error
+    } = await db.auth.getUser();
 
     if (error || !user) {
+
       showLogin();
+
       return;
     }
 
-    const { data: staff, error: staffError } = await db
+    const {
+      data: staff,
+      error: staffError
+    } = await db
       .from("staff_members")
       .select("location")
       .eq("user_id", user.id)
@@ -451,64 +984,127 @@ async function updateOrderStatus(order, newStatus, button) {
     }
 
     if (!staff || staff.location !== "rygos") {
+
       await db.auth.signOut();
-      showLogin("Ši paskyra neturi darbuotojo teisių.");
+
+      showLogin(
+        "Ši paskyra neturi darbuotojo teisių."
+      );
+
       return;
     }
 
-    showOrders(user.email || "Darbuotojas");
+    currentUser = user;
+
+    showOrders(
+      user.email || "Darbuotojas"
+    );
+
     await loadOrders();
+
+    updateNotificationStatus();
   }
+
+  // ========================================
+  // PRISIJUNGIMAS
+  // ========================================
 
   document.getElementById("loginForm")
     .addEventListener("submit", async (event) => {
+
       event.preventDefault();
 
-      const button = document.getElementById("loginButton");
+      const button =
+        document.getElementById("loginButton");
+
       button.disabled = true;
-      loginMessage.textContent = "Jungiamasi...";
+
+      loginMessage.textContent =
+        "Jungiamasi...";
 
       try {
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
 
-        const { error } = await db.auth.signInWithPassword({
-          email,
-          password
-        });
+        const email =
+          document.getElementById("email").value;
+
+        const password =
+          document.getElementById("password").value;
+
+        const { error } =
+          await db.auth.signInWithPassword({
+
+            email,
+            password
+
+          });
 
         if (error) throw error;
 
         document.getElementById("password").value = "";
+
         await checkUser();
 
       } catch (error) {
+
         console.error(error);
+
         loginMessage.textContent =
           "Nepavyko prisijungti. Patikrinkite duomenis.";
+
       } finally {
+
         button.disabled = false;
+
       }
+
     });
 
   document.getElementById("refreshButton")
     .addEventListener("click", loadOrders);
 
+  // ========================================
+  // ATSIJUNGIMAS
+  // ========================================
+
   document.getElementById("logoutButton")
     .addEventListener("click", async () => {
-      await db.auth.signOut();
-      showLogin("Atsijungta.");
+
+      const button =
+        document.getElementById("logoutButton");
+
+      button.disabled = true;
+
+      try {
+
+        await removePushSubscription();
+
+        const { error } = await db.auth.signOut();
+
+        if (error) throw error;
+
+        showLogin("Atsijungta.");
+
+      } catch (error) {
+
+        console.error(error);
+
+        alert(
+          "Nepavyko saugiai atsijungti. Bandykite dar kartą."
+        );
+
+      } finally {
+
+        button.disabled = false;
+
+      }
+
     });
 
+  // ========================================
+  // SISTEMOS PALEIDIMAS
+  // ========================================
+
   async function start() {
-    if (
-      SUPABASE_URL.startsWith("CIA_IRASYK") ||
-      SUPABASE_KEY.startsWith("CIA_IRASYK")
-    ) {
-      showLogin("Dar reikia įrašyti Supabase URL ir viešą raktą.");
-      document.getElementById("loginButton").disabled = true;
-      return;
-    }
 
     db = window.supabase.createClient(
       SUPABASE_URL,
@@ -516,57 +1112,54 @@ async function updateOrderStatus(order, newStatus, button) {
     );
 
     try {
+
       await checkUser();
+
     } catch (error) {
+
       console.error(error);
-      showLogin("Nepavyko patikrinti darbuotojo paskyros.");
+
+      showLogin(
+        "Nepavyko patikrinti darbuotojo paskyros."
+      );
+
     }
   }
 
+  // Automatinis užsakymų atnaujinimas
+
   setInterval(() => {
+
     if (db && !ordersPanel.hidden) {
+
       loadOrders();
+
     }
+
   }, 20000);
 
+  // Atnaujiname užsakymus grįžus į puslapį
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+
+      if (
+        document.visibilityState === "visible" &&
+        db &&
+        !ordersPanel.hidden
+      ) {
+
+        loadOrders();
+
+      }
+
+    }
+  );
 
   start();
 
-  // DARBUOTOJŲ PUSH PRANEŠIMŲ PARUOŠIMAS
-  if ("serviceWorker" in navigator && window.isSecureContext) {
-
-    window.addEventListener("load", async () => {
-      try {
-
-        const registration =
-          await navigator.serviceWorker.register(
-            "/darbuotojai-sw.js"
-          );
-
-        console.log(
-          "Pranešimų tarnyba užregistruota:",
-          registration.scope
-        );
-
-      } catch (error) {
-
-        console.error(
-          "Nepavyko užregistruoti pranešimų tarnybos:",
-          error
-        );
-
-      }
-    });
-
-  } else {
-
-    console.warn(
-      "Ši naršyklė nepalaiko Service Worker arba nėra HTTPS."
-    );
-
-  }
 </script>
 
 </body>
 </html>
-

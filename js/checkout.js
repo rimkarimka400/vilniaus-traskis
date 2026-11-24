@@ -29,7 +29,9 @@ const orderSentButton = document.querySelector("#orderSentBtn");
 const smsConfirmModal = document.querySelector("#smsConfirmModal");
 const smsSentButton = document.querySelector("#smsSentBtn");
 const smsNotSentButton = document.querySelector("#smsNotSentBtn");
-const ONLINE_ORDER_ENABLED = false;
+const ONLINE_ORDER_ENABLED = true;
+const PAYMENT_FUNCTION_URL =
+    "https://uzxwackufvrkfhmenhdy.supabase.co/functions/v1/montonio-create-payment";
 let smsConfirmationShown = false;
 
 
@@ -688,7 +690,7 @@ if (pickupTimeInput) {
    TIK RYGOS G. 43
 ========================================= */
 
-orderForm?.addEventListener("submit", event => {
+orderForm?.addEventListener("submit", async event => {
     event.preventDefault();
 
     const cart = getCart();
@@ -799,6 +801,101 @@ orderForm?.addEventListener("submit", event => {
                 };
             })
         });
+    }
+
+    // MONTONIO MOKĖJIMAS
+    // Kol ONLINE_ORDER_ENABLED = false,
+    // klientams lieka senasis SMS užsakymo būdas.
+
+    if (ONLINE_ORDER_ENABLED) {
+
+        const submitButton = orderForm.querySelector(
+            'button[type="submit"]'
+        );
+
+        if (submitButton) {
+            submitButton.disabled = true;
+        }
+
+        try {
+
+            const response = await fetch(
+                PAYMENT_FUNCTION_URL,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        items: cart.map(item => ({
+
+                            productId: item.productId,
+                            name: item.name,
+                            quantity: item.quantity,
+
+                            sauces: getItemChoices(item).sauces,
+                            drinks: getItemChoices(item).drinks
+
+                        })),
+
+                        customerName: customerName,
+                        customerPhone: customerPhone,
+                        pickupTime: pickupTime,
+                        customerComment: customerComment,
+
+                        pickupLocation: "rygos"
+
+                    })
+
+                }
+            );
+
+            const result = await response.json();
+
+            if (
+                !response.ok ||
+                !result.success ||
+                typeof result.paymentUrl !== "string" ||
+                !result.paymentUrl.startsWith("https://")
+            ) {
+
+                throw new Error(
+                    result.error ||
+                    "Nepavyko pradėti mokėjimo."
+                );
+
+            }
+
+            sessionStorage.setItem(
+                "traskisPendingPaymentOrder",
+                result.orderNumber
+            );
+
+            window.location.assign(result.paymentUrl);
+
+            return;
+
+        } catch (error) {
+
+            console.error("Montonio klaida:", error);
+
+            alert(
+                error.message ||
+                "Mokėjimo klaida. Bandykite dar kartą."
+            );
+
+        } finally {
+
+            if (submitButton) {
+                submitButton.disabled = false;
+            }
+
+        }
+
+        return;
     }
 
     // TELEFONAS – atidaro SMS
